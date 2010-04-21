@@ -24,7 +24,7 @@
 if(!defined('__KTAI_SESSION__')){
 	define('__KTAI_SESSION__', 1);
 	function session_use_trans_sid($flag){
-		if(ini_set('session.use_trans_sid', $flag) !== false){
+		if(ini_set('session.use_trans_sid', $flag) === false){
 			if($flag){
 				$session_name = session_name();
 				if(isset($_REQUEST[$session_name]) && preg_match('/^\w+$/', $_REQUEST[$session_name])){
