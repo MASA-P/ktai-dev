@@ -1,186 +1,186 @@
 ***************************************************************************
-	�g�їp���C�u�����uKtai Library�v�J����(ktai-dev)������
+	携帯用ライブラリ「Ktai Library」開発環境(ktai-dev)説明書
 	Copyright 2009-2010 ECWorks ( http://www.ecworks.jp/ )
 ***************************************************************************
 
 --------------------------------------------------
-���͂��߂�
+■はじめに
 --------------------------------------------------
 
-�@�{�A�[�J�C�u�E�R�[�h�ꎮ�́ACakePHP���͂��߂Ƃ���PHP���œ��삷��g�уT�C�g
-���C�u�����uKtai Library�v�̊J�����ł��B���̊����x�[�X�ɋ@�\�ǉ���
-�R�[�h�C�������Ă����������ƂŁAKtai Library�̊J���ɎQ�����邱�Ƃ��ł��܂��B
-�@�܂��A�{�A�[�J�C�u�ꎮ�́A����CakePHP�ɂČg�уT�C�g�����\�z�ς݂ł��̂ŁA
-���̊����x�[�X�ɐV�K�T�C�g�J�����s�����Ƃ��ł��܂��B
-
-
---------------------------------------------------
-�������
---------------------------------------------------
-
-�@�A�[�J�C�u�ꎮ�́ACakePHP1.2��������CakePHP1.3�ɂē��삷��悤�ɐ��삵��
-����܂��B�Ȃ��{�J�����́ACakePHP1.3 Stable��(CakePHP1.3.0)���x�[�X�ɍ\�z
-����Ă��܂��B
-�@�܂����C�u�����{�̂́APHP4/5�œ��삷��悤�ɍ쐬����Ă��܂��B�`�F�b�N��PHP5
-���ɂčs���Ă���܂��B
+　本アーカイブ・コード一式は、CakePHPをはじめとするPHP環境で動作する携帯サイト
+ライブラリ「Ktai Library」の開発環境です。この環境をベースに機能追加や
+コード修正をしていただくことで、Ktai Libraryの開発に参加することができます。
+　また、本アーカイブ一式は、既にCakePHPにて携帯サイト環境を構築済みですので、
+この環境をベースに新規サイト開発を行うことができます。
 
 
 --------------------------------------------------
-���Ώے[��
+■動作環境
 --------------------------------------------------
 
-�@�{���C�u�����́A3G�g�т����iPhone�APHS��ΏۂƂ��Ă��܂��B����ȑO�̌g�т�
-���p�ł�����̂�����܂����A��{�I�ɃT�|�[�g�O�ł��B
-�@����J-PHONE/Vodafone����̒[���AHDML�Ή���EZWeb�ł͓���ł��Ȃ����̂�
-����܂��B���̂��߁A�����T�C�g�Ȃǌ����ȊǗ����s���悤�ȃT�C�g�ɂ͌�����
-����܂���̂ł��������������B
-
-
---------------------------------------------------
-�������p����
---------------------------------------------------
-
-�@�{�c�[���ꎮ�͎g�p�������͍Ĕz�z�ɂ��āA�����ł����p���������܂��B
-
-�@�{�c�[������уA�[�J�C�u���Ɋ܂܂��CakePHP, simpletest�ȊO�̑S�Ă̒��앨��
-�΂��錠����ECWorks���ۗL���Ă���AGNU��ʌ��O���p�����_��Ɋ�Â��Ĕz�z����
-����܂��B�Ĕz�z�E���ϓ��͌_��͈͓̔��Ŏ��R�ɍs�����Ƃ��o���܂��B�ڂ����́A
-�Y�t��GNU��ʌ��O���p�����_�񏑂����ǂ݂��������B
-
-�@�܂��{�J�����́ACakePHP�{�̂��܂�ł���܂��B
-�@CakePHP��MIT���C�Z���X�ɂ��z�z����Ă���܂��BCakePHP�Ɋւ���\�[�X�R�[�h��
-���Ă͓��Y���C�Z���X�ɏ����������܂�(�Ώۃt�@�C���Q�ɂ��܂��Ắu�y�Q�l�F
-�f�B���N�g���\��(�֌W�̂�����̂̂ݕ\�L)�z�v��������������)
-
-�@�Ȃ��A�{�c�[���͈�ʓI�ȗ��p�ɂ����ē�����m�F���Ă���܂����A�����p�̊���
-�󋵁A�ݒ�������̓v���O������̕s����ɂ����҂ƈقȂ铮�������ꍇ��
-�l�����܂��B�{�c�[���̗��p�ɑ΂�����ʂ͖��ۏ؂ł���A������s���v�⑹�Q����
-���āA�����͈�؂̐ӔC�����������˂܂��̂ŁA���������������܂��悤���肢
-�\���グ�܂��B
+　アーカイブ一式は、CakePHP1.2もしくはCakePHP1.3にて動作するように制作して
+おります。なお本開発環境は、CakePHP1.3 Stable版(CakePHP1.3.0)をベースに構築
+されています。
+　またライブラリ本体は、PHP4/5で動作するように作成されています。チェックはPHP5
+環境にて行っております。
 
 
 --------------------------------------------------
-�������p���@
+■対象端末
 --------------------------------------------------
 
-�@��{�I�ɁA���肵���A�[�J�C�u�������̓��|�W�g�������clone�����̂܂܎��s����
-���Ƃ��o���܂��B
-�@����̈ʒu�ɐݒu��Adatabase.php�̐ݒ�Eapp/tmp�f�B���N�g���̃p�[�~�b�V����
-�ύX�����s���A�u(�C���X�g�[������URL)/ktaipages�v��\�����ē���m�F������
-���������B
-�@�Ȃ��ASixApart�Ђ����J���Ă���G�����摜�́A�����̊֌W���瓯�����Ă���܂���B
-�ʓr���肵�A�uapp/webroot/img/emoticons�v���ɐݒu���Ă��������B
+　本ライブラリは、3G携帯およびiPhone、PHSを対象としています。それ以前の携帯で
+利用できるものもありますが、基本的にサポート外です。
+　特にJ-PHONE/Vodafone時代の端末、HDML対応のEZWebでは動作できないものが
+あります。このため、公式サイトなど厳密な管理を行うようなサイトには向いて
+おりませんのでご了承ください。
 
-�@�{�A�[�J�C�u�́Asimpletest�𓯍����Ă���܂��B
-�u(�C���X�g�[������URL)/test.php�v�����s���邱�Ƃ�simpletest�𗘗p���邱�Ƃ�
-�ł��܂��B
 
-�y�Q�l�F�f�B���N�g���\��(�֌W�̂�����̂̂ݕ\�L)�z
+--------------------------------------------------
+■ご利用条件
+--------------------------------------------------
+
+　本ツール一式は使用もしくは再配布について、無料でご利用いただけます。
+
+　本ツールおよびアーカイブ内に含まれるCakePHP, simpletest以外の全ての著作物に
+対する権利はECWorksが保有しており、GNU一般公衆利用許諾契約に基づいて配布して
+おります。再配布・改変等は契約の範囲内で自由に行うことが出来ます。詳しくは、
+添付のGNU一般公衆利用許諾契約書をお読みください。
+
+　また本開発環境は、CakePHP本体を含んでおります。
+　CakePHPはMITライセンスにより配布されております。CakePHPに関するソースコードに
+ついては当該ライセンスに準拠いたします(対象ファイル群につきましては「【参考：
+ディレクトリ構成(関係のあるもののみ表記)】」をご覧ください)
+
+　なお、本ツールは一般的な利用において動作を確認しておりますが、ご利用の環境や
+状況、設定もしくはプログラム上の不具合等により期待と異なる動作をする場合が
+考えられます。本ツールの利用に対する効果は無保証であり、あらゆる不利益や損害等に
+ついて、当方は一切の責任をいたしかねますので、ご了承いただきますようお願い
+申し上げます。
+
+
+--------------------------------------------------
+■ご利用方法
+--------------------------------------------------
+
+　基本的に、入手したアーカイブもしくはリポジトリからのcloneをそのまま実行する
+ことが出来ます。
+　所定の位置に設置後、database.phpの設定・app/tmpディレクトリのパーミッション
+変更等を行い、「(インストールしたURL)/ktaipages」を表示して動作確認をして
+ください。
+　なお、SixApart社が公開している絵文字画像は、権利の関係から同梱しておりません。
+別途入手し、「app/webroot/img/emoticons」内に設置してください。
+
+　本アーカイブは、simpletestを同梱しております。
+「(インストールしたURL)/test.php」を実行することでsimpletestを利用することが
+できます。
+
+【参考：ディレクトリ構成(関係のあるもののみ表記)】
 
 +- app								[755] 
 |  +- config						[755] 
-|  |  +- ktai_session.php			[644] �g�ь����Z�b�V�����ݒ�
+|  |  +- ktai_session.php			[644] 携帯向けセッション設定
 |  +- controllers					[755] 
 |  |  +- components					[755] 
-|  |  |  +- ktai.php				[644] �g�уR���|�[�l���g
-|  |  +- ktaipages_controller.php	[644] �T���v���R���g���[��
-|  |  +- ktai_app_controller.php	[644] �g�їpapp_controller.php
+|  |  |  +- ktai.php				[644] 携帯コンポーネント
+|  |  +- ktaipages_controller.php	[644] サンプルコントローラ
+|  |  +- ktai_app_controller.php	[644] 携帯用app_controller.php
 |  +- views							[755] 
 |  |  +- helpers					[755] 
-|  |  |  +- ktai.php				[644] �g�уw���p�[
+|  |  |  +- ktai.php				[644] 携帯ヘルパー
 |  |  +- ktaipages					[755] 
-|  |  |  +- index.ctp				[644] �T���v���y�[�W
+|  |  |  +- index.ctp				[644] サンプルページ
 |  |  +- layouts					[755] 
-|  |     +- ktai_default.ctp		[644] �T���v�����C�A�E�g
+|  |     +- ktai_default.ctp		[644] サンプルレイアウト
 |  +- webroot						[755] 
 |  |  +- img						[755] 
-|  |     +- emoticons				[755] �G�����摜�͂����ɐݒu���܂�(��q)
-|  |        +- empty				[***] (�_�~�[�E�A�b�v���[�h�s�v�ł�)
-|  +- app_error.php					[644] �g�їpapp_error.php
-+- cake								[755] (*)CakePHP�R�A�R�[�h
+|  |     +- emoticons				[755] 絵文字画像はここに設置します(後述)
+|  |        +- empty				[***] (ダミー・アップロード不要です)
+|  +- app_error.php					[644] 携帯用app_error.php
++- cake								[755] (*)CakePHPコアコード
 +- tests							[755] 
 |  +- cases							[755] 
 |  |  +- components					[755] 
-|  |  |  +- ktai.test.php			[644] �e�X�g�P�[�X(Ktai�R���|�[�l���g)
+|  |  |  +- ktai.test.php			[644] テストケース(Ktaiコンポーネント)
 |  |  +- controllers				[755] 
-|  |  |  +- ktaipages_controller.test.php	[644] �e�X�g�P�[�X(�T���v���R���g���[��)
+|  |  |  +- ktaipages_controller.test.php	[644] テストケース(サンプルコントローラ)
 |  |  +- helpers					[755] 
-|  |  |  +- ktai.test.php			[644] �e�X�g�P�[�X(Ktai�w���p�[)
+|  |  |  +- ktai.test.php			[644] テストケース(Ktaiヘルパー)
 |  |  +- vendors					[755] 
-|  |  |  +- lib3gk.test.php			[644] �e�X�g�P�[�X(�{��)
-|  |  |  +- lib3gk_carrier.test.php	[644] �e�X�g�P�[�X(�L�����A����֘A)
-|  |  |  +- lib3gk_def.test.php		[644] �e�X�g�P�[�X(��`�֘A)
-|  |  |  +- lib3gk_emoji.test.php	[644] �e�X�g�P�[�X(�G�����֘A)
-|  |  |  +- lib3gk_html.test.php	[644] �e�X�g�P�[�X(HTML�֘A)
-|  |  |  +- lib3gk_machine.test.php	[644] �e�X�g�P�[�X(�@����֘A)
-|  |     +- lib3gk_tools.test.php	[644] �e�X�g�P�[�X(���̑��c�[���֘A)
+|  |  |  +- lib3gk.test.php			[644] テストケース(本体)
+|  |  |  +- lib3gk_carrier.test.php	[644] テストケース(キャリア判定関連)
+|  |  |  +- lib3gk_def.test.php		[644] テストケース(定義関連)
+|  |  |  +- lib3gk_emoji.test.php	[644] テストケース(絵文字関連)
+|  |  |  +- lib3gk_html.test.php	[644] テストケース(HTML関連)
+|  |  |  +- lib3gk_machine.test.php	[644] テストケース(機種情報関連)
+|  |     +- lib3gk_tools.test.php	[644] テストケース(その他ツール関連)
 |  +- groups						[755] 
-|  |  +- lib3gk_group.php			[644] ���C�u�����̃O���[�v�e�X�g�R�[�h
+|  |  +- lib3gk_group.php			[644] ライブラリのグループテストコード
 +- vendors							[755] 
 |  +- ecw							[755] 
-|  |  +- lib3gk.php					[644] �g�у��C�u�����{��
-|  |  +- lib3gk_carrier.php			[644] �g�у��C�u�����{��(�L�����A����֘A)
-|  |  +- lib3gk_def.php				[644] �g�у��C�u�����{��(��`�֘A)
-|  |  +- lib3gk_emoji.php			[644] �g�у��C�u�����{��(�G�����֘A)
-|  |  +- lib3gk_html.php			[644] �g�у��C�u�����{��(HTML�֘A)
-|  |  +- lib3gk_machine.php			[644] �g�у��C�u�����{��(�@����֘A)
-|  |  +- lib3gk_tools.php			[644] �g�у��C�u�����{��(���̑��c�[���֘A)
-|  +- simpletest					[755] (*)simpletest�R�[�h
-+- .gitignore						[***] .gitignore�t�@�C��
-|									�������ȉ��̓A�b�v���[�h�s�v�ł�
-+- LICENSE							[***] GNU���C�Z���X�K��
-+- README							[***] (*)CakePHP��readme
-+- readme.txt						[***] �g�у��C�u�����{�̂̐�����
-+- readme_ktai-dev.txt				[***] ���̃t�@�C��
+|  |  +- lib3gk.php					[644] 携帯ライブラリ本体
+|  |  +- lib3gk_carrier.php			[644] 携帯ライブラリ本体(キャリア判定関連)
+|  |  +- lib3gk_def.php				[644] 携帯ライブラリ本体(定義関連)
+|  |  +- lib3gk_emoji.php			[644] 携帯ライブラリ本体(絵文字関連)
+|  |  +- lib3gk_html.php			[644] 携帯ライブラリ本体(HTML関連)
+|  |  +- lib3gk_machine.php			[644] 携帯ライブラリ本体(機種情報関連)
+|  |  +- lib3gk_tools.php			[644] 携帯ライブラリ本体(その他ツール関連)
+|  +- simpletest					[755] (*)simpletestコード
++- .gitignore						[***] .gitignoreファイル
+|									↓↓↓以下はアップロード不要です
++- LICENSE							[***] GNUライセンス規約書
++- README							[***] (*)CakePHPのreadme
++- readme.txt						[***] 携帯ライブラリ本体の説明書
++- readme_ktai-dev.txt				[***] このファイル
 
-(*)���Y���C�Z���X�ΏۊO�̃t�@�C���Q�ł�
-
-
---------------------------------------------------
-���o�[�W�������
---------------------------------------------------
-
-�@�ڂ�����readme.txt��������������
-�@ktai-dev�̃o�[�W������Ktai Library�{�̂̃o�[�W�����Ɠ���ł��B
+(*)当該ライセンス対象外のファイル群です
 
 
 --------------------------------------------------
-���s��C���E�ǉ��@�\�̃}�[�W�ɂ���
+■バージョン情報
 --------------------------------------------------
 
-�@Ktai Library�ɒǉ��@�\���s������o�O�C�������ۂɂ́A����pull request��
-���肢���܂��B���e�ɂ��Đ������s���A�����o�[�W�����Ɏ�����Ă����܂��B
-
-�@��{�I�Ɍ��݂�Ktai Library�́A���̃|���V�[�ŊJ�����Ă���܂��B�v����
-�������Ȃ����̂̓}�[�W�������������Ă��������܂��B
-
-�EPHP4/5�ǂ���ł�����\�ł��邱��
-�ECakePHP1.2/1.3�ǂ���ł�����\�ł��邱��
-�E�W���I�ȃC���X�g�[���œ��삷�邱��(���̃��C�u�������̒ǉ��C���X�g�[���̕K�v��
-�@�Ȃ����ƁB���̃��C�u�����𓯍��\�Ȃ�OK)
-�E���G�ȃC���X�g�[�����@���K�v�łȂ�����
-�EXAMPP���ł����삷�邱��
-�E�����Ǒ��ɔ����Ȃ����ƁB�܂��ƍߍs�ד����������Ȃ�����
-�E�s���葽���̕��ɂƂ��ėL�v�ł��邱��
+　詳しくはreadme.txtをご覧ください
+　ktai-devのバージョンはKtai Library本体のバージョンと同一です。
 
 
 --------------------------------------------------
-���R�A�f�x���b�p�[��W
+■不具合修正・追加機能のマージについて
 --------------------------------------------------
 
-�@Ktai Library��ꑮ�ŊJ�����Ă���������u�R�A�f�x���b�p�[�v���W����
-����܂��B������������܂�����uinfo@ecworks.jp�v�܂ł��̎|���A�����������B
+　Ktai Libraryに追加機能を行ったりバグ修正した際には、是非pull requestを
+お願いします。内容について精査を行い、次期バージョンに取り入れていきます。
 
-�y�Q�����i(�ł����)�z
-�ECakePHP���n�m����Ă�����B�������͑��̃t���[�����[�N�����n�m����Ă����
-�E�g�уT�C�g����ɏڂ�����(�����o�����̂����)
-�E���C�u��������̌o���������
+　基本的に現在のKtai Libraryは、次のポリシーで開発しております。要件を
+満たさないものはマージをご遠慮させていただきます。
+
+・PHP4/5どちらでも動作可能であること
+・CakePHP1.2/1.3どちらでも動作可能であること
+・標準的なインストールで動作すること(他のライブラリ等の追加インストールの必要が
+　ないこと。そのライブラリを同梱可能ならOK)
+・複雑なインストール方法が必要でないこと
+・XAMPP等でも動作すること
+・公序良俗に反しないこと。また犯罪行為等を助長しないこと
+・不特定多数の方にとって有益であること
 
 
-�ȏ�
+--------------------------------------------------
+■コアデベロッパー募集
+--------------------------------------------------
+
+　Ktai Libraryを専属で開発していただける「コアデベロッパー」を募集して
+おります。もし興味ありましたら「info@ecworks.jp」までその旨ご連絡ください。
+
+【参加資格(できれば)】
+・CakePHPを熟知されている方。もしくは他のフレームワーク等を熟知されている方
+・携帯サイト制作に詳しい方(実務経験等のある方)
+・ライブラリ制作の経験がある方
+
+
+以上
 
 
 **************************************************
-�@�@ECWorks(H.N MASA-P)
-�@�@http://www.ecworks.jp/
+　　ECWorks(H.N MASA-P)
+　　http://www.ecworks.jp/
 **************************************************
