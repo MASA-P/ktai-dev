@@ -39,9 +39,20 @@ class TestLib3gkCarrier extends CakeTestCase {
 		$this->assertTrue(is_array($arr));
 		$this->assertEqual($arr['carrier'], KTAI_CARRIER_UNKNOWN);
 		
-		$user_agent = 'DoCoMo/2.0 P906i';
+		$user_agent = 'DoCoMo/1.0/SO506iS/c20/TB/W20H10';
 		$arr = $this->Lib3gkCarrier->analyze_user_agent($user_agent);
 		$this->assertEqual($arr['carrier'], KTAI_CARRIER_DOCOMO);
+		
+		$user_agent = 'DoCoMo/2.0 P906i(c100;TB;W24H15)';
+		$arr = $this->Lib3gkCarrier->analyze_user_agent($user_agent);
+		$this->assertEqual($arr['carrier'], KTAI_CARRIER_DOCOMO);
+		$this->assertEqual($arr['machine_name'], 'P906i');
+		
+		//#1 一部端末の機種判別が出来ない
+		$user_agent = 'DoCoMo/2.0 SO902iWP+(c100;TB;W24H12)';
+		$arr = $this->Lib3gkCarrier->analyze_user_agent($user_agent);
+		$this->assertEqual($arr['carrier'], KTAI_CARRIER_DOCOMO);
+		$this->assertEqual($arr['machine_name'], 'SO902iWP+');
 		
 		$user_agent = 'HTTP_USER_AGENT=KDDI-SA31 UP.Browser/6.2.0.7.3.129 (GUI) MMP/2.0';
 		$arr = $this->Lib3gkCarrier->analyze_user_agent($user_agent);
@@ -69,7 +80,7 @@ class TestLib3gkCarrier extends CakeTestCase {
 		$this->assertEqual($test_value, KTAI_CARRIER_UNKNOWN);
 		$this->assertTrue($this->Lib3gkCarrier->_carrier == KTAI_CARRIER_UNKNOWN && $this->Lib3gkCarrier->_carrier_name == 'others' && $this->Lib3gkCarrier->_machine_name == 'default');
 		
-		$user_agent = 'DoCoMo/2.0 P906i';
+		$user_agent = 'DoCoMo/2.0 P906i(c100;TB;W24H15)';
 		$test_value = $this->Lib3gkCarrier->get_carrier($user_agent);
 		$this->assertEqual($test_value, KTAI_CARRIER_DOCOMO);
 		

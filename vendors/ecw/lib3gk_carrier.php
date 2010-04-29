@@ -101,7 +101,7 @@ class Lib3gkCarrier {
 			if(preg_match('_DoCoMo/1\.0/([\w]+)/_', $user_agent, $m)){
 				$arr['machine_name'] = $m[1];
 			}else
-			if(preg_match('_DoCoMo/2\.0\s([\w]+)\(_', $user_agent, $m)){
+			if(preg_match('_DoCoMo/2\.0\s([\w\+]+)\(_', $user_agent, $m)){
 				$arr['machine_name'] = $m[1];
 			}
 		
