@@ -55,6 +55,9 @@ class Lib3gkEmoji {
 		'img_emoji_ext' => 'gif', 
 		'img_emoji_size' => array(16, 16), 
 		
+		//Emoji caching params
+		//
+		'use_emoji_cache' => true,
 	);
 	
 	//------------------------------------------------
@@ -130,6 +133,11 @@ class Lib3gkEmoji {
 			'/^\xee[\x80-\x81\x84-\x85\x88-\x89\x8c-\x8d\x90-\x91\x94][\x80-\xbf]$/', 
 		), 
 	);
+	
+	//------------------------------------------------
+	//emoji cacching buffer
+	//------------------------------------------------
+	var $__cached = null;
 	
 	//------------------------------------------------
 	//emoji converting table
@@ -1919,6 +1927,8 @@ class Lib3gkEmoji {
 	//Initialize process
 	//------------------------------------------------
 	function initialize(){
+		
+		$this->__initCache();
 	}
 	
 	
@@ -2122,6 +2132,39 @@ class Lib3gkEmoji {
 	}
 	
 	//------------------------------------------------------------------------------
+	//Initialize Emoji caching table
+	//------------------------------------------------------------------------------
+	function __initCache(){
+		$this->__cached = array();
+		foreach(array_keys($this->carrier_indexes) as $ci){
+			foreach(array_keys($this->encoding_codes) as $ec){
+				$this->__cached[$ci][$ec] = array();
+			}
+		}
+	}
+	
+	//------------------------------------------------------------------------------
+	//Get from Emoji caching table
+	//------------------------------------------------------------------------------
+	function __getCache($code, $carrier_index = 0, $encoding_code = 1){
+		return empty($this->__cached[$carrier_index][$encoding_code][$code]) ? false : $this->__cached[$carrier_index][$encoding_code][$code];
+	}
+	
+	//------------------------------------------------------------------------------
+	//Set to Emoji caching table
+	//------------------------------------------------------------------------------
+	function __setCache($value, $code, $carrier_index = 0, $encoding_code = 1){
+		if(!isset($this->__emoji_table[0][$carrier_index])){
+			return false;
+		}
+		if(!isset($this->encoding_codes[$encoding_code])){
+			return false;
+		}
+		$this->__cached[$carrier_index][$encoding_code][$code] = $value;
+		return true;
+	}
+	
+	//------------------------------------------------------------------------------
 	//Emoji analizer for convert_emoji()
 	//------------------------------------------------------------------------------
 	function &__analyzeEmoji($str, $options = array()){
@@ -2249,16 +2292,28 @@ class Lib3gkEmoji {
 			$e = 0;		//SoftBankは必ず１種類
 		}
 		
+		//キャッシュをチェック
+		//
+		if($this->_params['use_emoji_cache'] && ($key = $this->__getCache($code, $c, $e)) !== false){
+			return $this->__emoji_table[$key];
+		}
+		
 		//絵文字セットを探し出す(※将来的に見直し予定)
 		//
-		foreach($this->__emoji_table as $table){
+		foreach($this->__emoji_table as $key => $table){
 			if($code == $table[$c][$e]){
+				if($this->_params['use_emoji_cache']){
+					$this->__setCache($key, $code, $c, $e);
+				}
 				return $table;
 			}
 			//AUの場合は数値文字参照とバイナリの２つのコードを参照する必要あり
 			//
 			if($c == 1 && $e == 1){
 				if($code == $table[$c][$e + 1]){
+					if($this->_params['use_emoji_cache']){
+						$this->__setCache($key, $code, $c, $e);
+					}
 					return $table;
 				}
 			}

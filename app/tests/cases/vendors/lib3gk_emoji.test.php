@@ -31,7 +31,7 @@ class TestLib3gkEmoji extends CakeTestCase {
 	function start(){
 		$this->Lib3gkEmoji = new Lib3gkEmoji();
 		$this->Lib3gkEmoji->initialize();
-		
+		$this->Lib3gkEmoji->_params['use_emoji_cache'] = false;
 	}
 	
 	function stop(){
@@ -437,5 +437,36 @@ class TestLib3gkEmoji extends CakeTestCase {
 				}
 			}
 		}
+	}
+	
+	function testCaching(){
+		
+		$tools = Lib3gkTools::get_instance();
+		$lib3gkCarrier = Lib3gkCarrier::get_instance();
+		
+		$lib3gkCarrier->_carrier = KTAI_CARRIER_UNKNOWN;
+		$this->Lib3gkEmoji->_params['input_encoding']  = KTAI_ENCODING_UTF8;
+		$this->Lib3gkEmoji->_params['output_encoding'] = KTAI_ENCODING_UTF8;
+		
+		$str  = "絵文字テスト。飲食店です";
+		$str .= $tools->int2utf8(0xe63e).$tools->int2utf8(0xe69c)."&#63647;aaa&#xe63e;bbb";
+		
+		$str_result = $str;
+		$this->Lib3gkEmoji->convert_emoji($str_result);
+		$this->assertFalse(isset($this->Lib3gkEmoji->__cached[0][0][63647]));
+		$this->assertFalse(isset($this->Lib3gkEmoji->__cached[0][1][0xe63e]));
+		$this->assertFalse(isset($this->Lib3gkEmoji->__cached[0][1][0xe69c]));
+		
+		$this->Lib3gkEmoji->_params['use_emoji_cache'] = true;
+		$str_result = $str;
+		$this->Lib3gkEmoji->convert_emoji($str_result);
+		$this->assertTrue(isset($this->Lib3gkEmoji->__cached[0][0][63647]));
+		$this->assertTrue(isset($this->Lib3gkEmoji->__cached[0][1][0xe63e]));
+		$this->assertTrue(isset($this->Lib3gkEmoji->__cached[0][1][0xe69c]));
+		
+		$str_check = $str;
+		$this->Lib3gkEmoji->convert_emoji($str_check);
+		$this->assertEqual($str_result, $str_check);
+		
 	}
 }
