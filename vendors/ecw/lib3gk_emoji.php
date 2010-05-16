@@ -26,20 +26,52 @@ require_once(dirname(__FILE__).'/lib3gk_def.php');
 
 
 /**
- * Emoji sub class
+ * Lib3gkEmoji sub class
+ *
+ * @package       KtaiLibrary
+ * @subpackage    KtaiLibrary.vendors.ecw
  */
 class Lib3gkEmoji {
 	
+	//================================================================
+	//Properties
+	//================================================================
 	//------------------------------------------------
 	//Library sub classes
 	//------------------------------------------------
+	/**
+	 * Lib3gkのインスタンス(deprecated)
+	 *
+	 * @var object
+	 * @access private
+	 */
 	var $__lib3gk  = null;
+	
+	/**
+	 * Lib3gkCarrierのインスタンス
+	 *
+	 * @var object
+	 * @access private
+	 */
 	var $__carrier = null;
+	
+	/**
+	 * Lib3gkToolsのインスタンス
+	 *
+	 * @var object
+	 * @access private
+	 */
 	var $__tools   = null;
 	
 	//------------------------------------------------
 	//Parameters
 	//------------------------------------------------
+	/**
+	 * Ktai Libraryパラメータ
+	 *
+	 * @var array
+	 * @access protected
+	 */
 	var $_params = array(
 		
 		//Encoding params
@@ -60,26 +92,35 @@ class Lib3gkEmoji {
 		'use_emoji_cache' => true,
 	);
 	
-	//------------------------------------------------
-	//endoding name to encode code
-	//------------------------------------------------
+	/**
+	 * エンコード名→エンコードコードの変換テーブル
+	 *
+	 * @var array
+	 * @access public
+	 */
 	var $encodings = array(
 		KTAI_ENCODING_SJIS    => 0, 
 		KTAI_ENCODING_SJISWIN => 0, 
 		KTAI_ENCODING_UTF8    => 1, 
 	);
 	
-	//------------------------------------------------
-	//encode code to encoding name
-	//------------------------------------------------
+	/**
+	 * エンコードコード→エンコード名の変換テーブル
+	 *
+	 * @var array
+	 * @access public
+	 */
 	var $encoding_codes = array(
 		0 => KTAI_ENCODING_SJISWIN, 
 		1 => KTAI_ENCODING_UTF8, 
 	);
 	
-	//------------------------------------------------
-	//carrier code to usings in emoji converters
-	//------------------------------------------------
+	/**
+	 * キャリアコード→絵文字キャリアコードの変換テーブル
+	 *
+	 * @var array
+	 * @access public
+	 */
 	var $carriers = array(
 		KTAI_CARRIER_UNKNOWN  => 0, 
 		KTAI_CARRIER_DOCOMO   => 1, 
@@ -91,9 +132,12 @@ class Lib3gkEmoji {
 		KTAI_CARRIER_CLAWLER  => 0, 
 	);
 	
-	//------------------------------------------------
-	//usings of carrier code
-	//------------------------------------------------
+	/**
+	 * キャリア絵文字コード→キャリアコードの変換テーブル
+	 *
+	 * @var array
+	 * @access public
+	 */
 	var $carrier_codes = array(
 		0 => KTAI_CARRIER_UNKNOWN, 
 		1 => KTAI_CARRIER_DOCOMO, 
@@ -101,9 +145,12 @@ class Lib3gkEmoji {
 		3 => KTAI_CARRIER_SOFTBANK, 
 	);
 	
-	//------------------------------------------------
-	//carrier code to emoji table indexes
-	//------------------------------------------------
+	/**
+	 * キャリアコード→キャリアインデックスの変換テーブル
+	 *
+	 * @var array
+	 * @access public
+	 */
 	var $carrier_indexes = array(
 		0 => 3, 
 		1 => 0, 
@@ -111,9 +158,12 @@ class Lib3gkEmoji {
 		3 => 2, 
 	);
 	
-	//------------------------------------------------
-	//emoji patterns for preg_match()
-	//------------------------------------------------
+	/**
+	 * 絵文字のパターンマッチ正規表現
+	 *
+	 * @var array
+	 * @access public
+	 */
 	var $patterns = array(
 		0 => array(
 			'/^(\xf8[\x9f-\xfc])|(\xf9[\x40-\xfc])$/', 
@@ -134,14 +184,20 @@ class Lib3gkEmoji {
 		), 
 	);
 	
-	//------------------------------------------------
-	//emoji cacching buffer
-	//------------------------------------------------
+	/**
+	 * 絵文字キャッシュバッファ
+	 *
+	 * @var array
+	 * @access private
+	 */
 	var $__cached = null;
 	
-	//------------------------------------------------
-	//emoji converting table
-	//------------------------------------------------
+	/**
+	 * 絵文字テーブル
+	 *
+	 * @var array
+	 * @access private
+	 */
 	var $__emoji_table = array(
 		array(						//1
 			array(0xf89f, 0xe63e), 
@@ -1910,9 +1966,19 @@ class Lib3gkEmoji {
 	);
 	
 	
+	//================================================================
+	//Methods
+	//================================================================
 	//------------------------------------------------
-	//Get instance
+	//Basics
 	//------------------------------------------------
+	/**
+	 * インスタンスの取得
+	 *
+	 * @return object 自分自身のインスタンス
+	 * @access public
+	 * @static
+	 */
 	function &get_instance(){
 		static $instance = array();
 		if(!$instance){
@@ -1923,27 +1989,40 @@ class Lib3gkEmoji {
 	}
 	
 	
-	//------------------------------------------------
-	//Initialize process
-	//------------------------------------------------
+	/**
+	 * 初期化
+	 *
+	 * @return (なし)
+	 * @access public
+	 */
 	function initialize(){
 		
 		$this->__initCache();
 	}
 	
 	
-	//------------------------------------------------
-	//Shutdown process
-	//------------------------------------------------
+	/**
+	 * 後始末
+	 *
+	 * @return (なし)
+	 * @access public
+	 */
 	function shutdown(){
 		$this->__lib3gk  = null;
 		$this->__carrier = null;
 		$this->__tools   = null;
 	}
 	
+	
 	//------------------------------------------------
-	//Load lib3gk class(deprecate)
+	//Load subclasses
 	//------------------------------------------------
+	/**
+	 * lib3gkの読み込み(deprecate)
+	 *
+	 * @return (なし)
+	 * @access private
+	 */
 	function __load_lib3gk(){
 		if(!class_exists('lib3gk')){
 			require_once(dirname(__FILE__).'/lib3gk.php');
@@ -1953,9 +2032,13 @@ class Lib3gkEmoji {
 		$this->__lib3gk->_params = &$this->_params;
 	}
 	
-	//------------------------------------------------
-	//Load lib3gkCarrier class
-	//------------------------------------------------
+	
+	/**
+	 * キャリア関連サブクラスの読み込み
+	 *
+	 * @return (なし)
+	 * @access private
+	 */
 	function __load_carrier(){
 		if(!class_exists('lib3gkcarrier')){
 			require_once(dirname(__FILE__).'/lib3gk_carrier.php');
@@ -1965,9 +2048,13 @@ class Lib3gkEmoji {
 		$this->__carrier->_params = &$this->_params;
 	}
 	
-	//------------------------------------------------
-	//Load tools class
-	//------------------------------------------------
+	
+	/**
+	 * その他サブクラスの読み込み
+	 *
+	 * @return (なし)
+	 * @access private
+	 */
 	function __load_tools(){
 		if(!class_exists('lib3gktools')){
 			require_once(dirname(__FILE__).'/lib3gk_tools.php');
@@ -1977,9 +2064,19 @@ class Lib3gkEmoji {
 		$this->__tools->_params = &$this->_params;
 	}
 	
+	
 	//------------------------------------------------
-	//Converting a emoji code to a charactor
+	//Lib3gkEmoji methods
 	//------------------------------------------------
+	/**
+	 * 絵文字コードを表示キャラクターに変換
+	 *
+	 * @param $code integer 絵文字コード
+	 * @param $oekey integer 出力するエンコードキー。$this->encodings[$output_encoding]の値
+	 * @param $binary boolean trueでバイナリ出力。falseで数値文字参照文字列。
+	 * @return string 変換後の絵文字
+	 * @access private
+	 */
 	function __convertEmojiChractor($code, $oekey, $binary){
 		
 		$replace = '';
@@ -2004,9 +2101,14 @@ class Lib3gkEmoji {
 		return $replace;
 	}
 	
-	//------------------------------------------------
-	//Create emoji image tags
-	//------------------------------------------------
+	
+	/**
+	 * 画像絵文字の作成
+	 *
+	 * @param $name string 絵文字名(画像絵文字のファイル名(拡張子なし))
+	 * @return string imgタグ付きの画像絵文字
+	 * @access public
+	 */
 	function create_image_emoji($name){
 		
 		$this->__load_lib3gk();		//deprecate
@@ -2020,9 +2122,19 @@ class Lib3gkEmoji {
 		return $this->__lib3gk->image($url, $htmlAttribute);	//deprecate
 	}
 	
-	//------------------------------------------------------------------------------
-	//Create Emoji charactor code
-	//------------------------------------------------------------------------------
+	
+	/**
+	 * 絵文字の入手
+	 *
+	 * @param $code mixed 絵文字コード(数値)もしくはバイナリ文字
+	 * @param $disp boolean trueの場合、echoを行う(デフォルト)
+	 * @param $carrier integer キャリアコード
+	 * @param $input_encoding integer 入力エンコーディング
+	 * @param $output_encoding integer 出力エンコーディング
+	 * @param $binary boolean trueの場合はバイナリ出力
+	 * @return string 絵文字(バイナリ・数値文字参照・imageタグ)
+	 * @access public
+	 */
 	function emoji($code, $disp = true, $carrier = null, $output_encoding = null, $binary = null){
 		
 		$this->__load_tools();
@@ -2131,9 +2243,13 @@ class Lib3gkEmoji {
 		return $str;
 	}
 	
-	//------------------------------------------------------------------------------
-	//Initialize Emoji caching table
-	//------------------------------------------------------------------------------
+	
+	/**
+	 * 絵文字キャッシュの初期化
+	 *
+	 * @return (なし)
+	 * @access private
+	 */
 	function __initCache(){
 		$this->__cached = array();
 		foreach(array_keys($this->carrier_indexes) as $ci){
@@ -2143,16 +2259,31 @@ class Lib3gkEmoji {
 		}
 	}
 	
-	//------------------------------------------------------------------------------
-	//Get from Emoji caching table
-	//------------------------------------------------------------------------------
+	
+	/**
+	 * 絵文字キャッシュから絵文字の入手
+	 *
+	 * @param $code mixed 絵文字コード(数値)もしくはバイナリ文字
+	 * @param $carrier_index integer $this->carrier_indexes[$this->carriers[$carrier]]の値
+	 * @param $encoding_code integer $this->encodings[$output_encoding]の値
+	 * @return (なし)
+	 * @access private
+	 */
 	function __getCache($code, $carrier_index = 0, $encoding_code = 1){
 		return empty($this->__cached[$carrier_index][$encoding_code][$code]) ? false : $this->__cached[$carrier_index][$encoding_code][$code];
 	}
 	
-	//------------------------------------------------------------------------------
-	//Set to Emoji caching table
-	//------------------------------------------------------------------------------
+	
+	/**
+	 * 絵文字キャッシュに絵文字のセット
+	 *
+	 * @param $value integer 絵文字のインデックス値
+	 * @param $code mixed 絵文字コード(数値)もしくはバイナリ文字
+	 * @param $carrier_index integer $this->carrier_indexes[$this->carriers[$carrier]]の値
+	 * @param $encoding_code integer $this->encodings[$output_encoding]の値
+	 * @return (なし)
+	 * @access private
+	 */
 	function __setCache($value, $code, $carrier_index = 0, $encoding_code = 1){
 		if(!isset($this->__emoji_table[0][$carrier_index])){
 			return false;
@@ -2164,9 +2295,20 @@ class Lib3gkEmoji {
 		return true;
 	}
 	
-	//------------------------------------------------------------------------------
-	//Emoji analizer for convert_emoji()
-	//------------------------------------------------------------------------------
+	
+	/**
+	 * 絵文字解析
+	 *
+	 * @param $str string 解析する文字列
+	 * @param $options array 解析オプション
+	 * @return array 解析データ
+	 * @access private
+	 *
+	 * $optionのとるキーと値(省略可)
+	 *   'input_carrier'  入力データのキャリア
+	 *   'output_carrier' 変換するキャリア
+	 *   'input_encoding' 入力データのエンコーディング
+	 */
 	function &__analyzeEmoji($str, $options = array()){
 		
 		$this->__load_carrier();
@@ -2267,9 +2409,16 @@ class Lib3gkEmoji {
 		return $arr;
 	}
 	
-	//------------------------------------------------------------------------------
-	//Emoji search for convert_emoji()
-	//------------------------------------------------------------------------------
+	
+	/**
+	 * 絵文字の検索
+	 *
+	 * @param $code mixed 絵文字コード(数値)もしくはバイナリ文字
+	 * @param $encoding string エンコーディング名
+	 * @param $carrier integer キャリアコード
+	 * @return array 絵文字テーブルから入手した絵文字データ
+	 * @access private
+	 */
 	function __searchEmojiSet($code, $encoding = KTAI_ENCODING_UTF8, $carrier = KTAI_CARRIER_DOCOMO){
 		
 		//キャリアとエンコーディングの正規化
@@ -2321,9 +2470,19 @@ class Lib3gkEmoji {
 		return false;
 	}
 	
-	//------------------------------------------------------------------------------
-	//Convert iMODE Emoji to other carriers
-	//------------------------------------------------------------------------------
+	
+	/**
+	 * 絵文字変換
+	 *
+	 * @param $code string& コンバート文字列
+	 * @param $disp boolean trueの場合、echoを行う(デフォルト)
+	 * @param $carrier integer キャリアコード
+	 * @param $input_encoding integer 入力エンコーディング
+	 * @param $output_encoding integer 出力エンコーディング
+	 * @param $binary boolean trueの場合はバイナリ出力
+	 * @return (なし)
+	 * @access public
+	 */
 	function convert_emoji(&$str, $carrier = null, $input_encoding = null, $output_encoding = null, $binary = null){
 		
 		$this->__load_carrier();
