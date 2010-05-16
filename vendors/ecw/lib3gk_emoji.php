@@ -40,20 +40,20 @@ class Lib3gkEmoji {
 	//Library sub classes
 	//------------------------------------------------
 	/**
-	 * Lib3gkのインスタンス(deprecated)
-	 *
-	 * @var object
-	 * @access private
-	 */
-	var $__lib3gk  = null;
-	
-	/**
 	 * Lib3gkCarrierのインスタンス
 	 *
 	 * @var object
 	 * @access private
 	 */
 	var $__carrier = null;
+	
+	/**
+	 * Lib3gkHtmlのインスタンス
+	 *
+	 * @var object
+	 * @access private
+	 */
+	var $__html    = null;
 	
 	/**
 	 * Lib3gkToolsのインスタンス
@@ -2008,8 +2008,8 @@ class Lib3gkEmoji {
 	 * @access public
 	 */
 	function shutdown(){
-		$this->__lib3gk  = null;
 		$this->__carrier = null;
+		$this->__html    = null;
 		$this->__tools   = null;
 	}
 	
@@ -2017,22 +2017,6 @@ class Lib3gkEmoji {
 	//------------------------------------------------
 	//Load subclasses
 	//------------------------------------------------
-	/**
-	 * lib3gkの読み込み(deprecate)
-	 *
-	 * @return (なし)
-	 * @access private
-	 */
-	function __load_lib3gk(){
-		if(!class_exists('lib3gk')){
-			require_once(dirname(__FILE__).'/lib3gk.php');
-		}
-		$this->__lib3gk = Lib3gk::get_instance();
-		$this->_params = array_merge($this->__lib3gk->_params, $this->_params);
-		$this->__lib3gk->_params = &$this->_params;
-	}
-	
-	
 	/**
 	 * キャリア関連サブクラスの読み込み
 	 *
@@ -2046,6 +2030,22 @@ class Lib3gkEmoji {
 		$this->__carrier = Lib3gkCarrier::get_instance();
 		$this->_params = array_merge($this->__carrier->_params, $this->_params);
 		$this->__carrier->_params = &$this->_params;
+	}
+	
+	
+	/**
+	 * HTML関連サブクラスの読み込み
+	 *
+	 * @return (なし)
+	 * @access private
+	 */
+	function __load_html(){
+		if(!class_exists('lib3gkhtml')){
+			require_once(dirname(__FILE__).'/lib3gk_html.php');
+		}
+		$this->__html = Lib3gkHtml::get_instance();
+		$this->_params = array_merge($this->__html->_params, $this->_params);
+		$this->__html->_params = &$this->_params;
 	}
 	
 	
@@ -2111,7 +2111,7 @@ class Lib3gkEmoji {
 	 */
 	function create_image_emoji($name){
 		
-		$this->__load_lib3gk();		//deprecate
+		$this->__load_html();
 		
 		$url = $this->_params['img_emoji_url'].$name.'.'.$this->_params['img_emoji_ext'];
 		$htmlAttribute = array(
@@ -2119,7 +2119,7 @@ class Lib3gkEmoji {
 			'width' => $this->_params['img_emoji_size'][0], 
 			'height' => $this->_params['img_emoji_size'][1], 
 		);
-		return $this->__lib3gk->image($url, $htmlAttribute);	//deprecate
+		return $this->__html->image($url, $htmlAttribute);
 	}
 	
 	
