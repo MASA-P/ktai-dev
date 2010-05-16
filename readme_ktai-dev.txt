@@ -85,37 +85,41 @@
 |  |  |  +- ktai.php				[644] 携帯コンポーネント
 |  |  +- ktaipages_controller.php	[644] サンプルコントローラ
 |  |  +- ktai_app_controller.php	[644] 携帯用app_controller.php
+|  |  +- ktai_tests_controller.php	[644] テスト用コントローラ
 |  +- views							[755] 
 |  |  +- helpers					[755] 
 |  |  |  +- ktai.php				[644] 携帯ヘルパー
 |  |  +- ktaipages					[755] 
 |  |  |  +- index.ctp				[644] サンプルページ
+|  |  +- ktaitests					[755] 
+|  |  |  +- index.ctp				[644] テスト用ビュー
+|  |  |  +- autoconv.ctp			[644] テスト用ビュー(一括変換用)
 |  |  +- layouts					[755] 
 |  |     +- ktai_default.ctp		[644] サンプルレイアウト
 |  +- webroot						[755] 
 |  |  +- img						[755] 
 |  |     +- emoticons				[755] 絵文字画像はここに設置します(後述)
 |  |        +- empty				[***] (ダミー・アップロード不要です)
-|  +- app_error.php					[644] 携帯用app_error.php
-+- cake								[755] (*)CakePHPコアコード
-+- tests							[755] 
-|  +- cases							[755] 
-|  |  +- components					[755] 
-|  |  |  +- ktai.test.php			[644] テストケース(Ktaiコンポーネント)
-|  |  +- controllers				[755] 
-|  |  |  +- ktaipages_controller.test.php	[644] テストケース(サンプルコントローラ)
-|  |  +- helpers					[755] 
-|  |  |  +- ktai.test.php			[644] テストケース(Ktaiヘルパー)
-|  |  +- vendors					[755] 
-|  |  |  +- lib3gk.test.php			[644] テストケース(本体)
-|  |  |  +- lib3gk_carrier.test.php	[644] テストケース(キャリア判定関連)
-|  |  |  +- lib3gk_def.test.php		[644] テストケース(定義関連)
-|  |  |  +- lib3gk_emoji.test.php	[644] テストケース(絵文字関連)
-|  |  |  +- lib3gk_html.test.php	[644] テストケース(HTML関連)
-|  |  |  +- lib3gk_machine.test.php	[644] テストケース(機種情報関連)
+|  +- tests							[755] 
+|  |  +- cases						[755] 
+|  |     +- components				[755] 
+|  |     |  +- ktai.test.php		[644] テストケース(Ktaiコンポーネント)
+|  |     +- controllers				[755] 
+|  |     |  +- ktai_tests_controller.test.php	[644] テストケース(コントローラ)
+|  |     +- helpers					[755] 
+|  |     |  +- ktai.test.php		[644] テストケース(Ktaiヘルパー)
+|  |     +- vendors					[755] 
+|  |     |  +- lib3gk.test.php		[644] テストケース(本体)
+|  |     |  +- lib3gk_carrier.test.php	[644] テストケース(キャリア判定関連)
+|  |     |  +- lib3gk_def.test.php	[644] テストケース(定義関連)
+|  |     |  +- lib3gk_emoji.test.php	[644] テストケース(絵文字関連)
+|  |     |  +- lib3gk_html.test.php	[644] テストケース(HTML関連)
+|  |     |  +- lib3gk_machine.test.php	[644] テストケース(機種情報関連)
 |  |     +- lib3gk_tools.test.php	[644] テストケース(その他ツール関連)
 |  +- groups						[755] 
 |  |  +- lib3gk_group.php			[644] ライブラリのグループテストコード
+|  +- app_error.php					[644] 携帯用app_error.php
++- cake								[755] (*)CakePHPコアコード
 +- vendors							[755] 
 |  +- ecw							[755] 
 |  |  +- lib3gk.php					[644] 携帯ライブラリ本体
