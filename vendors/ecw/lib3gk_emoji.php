@@ -1286,7 +1286,7 @@ class Lib3gkEmoji {
 		), 
 		array(						//156
 			array(0xf9a5, 0xe700), 
-			array(0xf3ef, 0xe82e, 0xecef, 0x7a71, 0xedef), 
+			array(0xf3ef, 0xeb2e, 0xecef, 0x7a71, 0xedef), 
 			'$FX', 
 			'Å@', 
 			'down', 
