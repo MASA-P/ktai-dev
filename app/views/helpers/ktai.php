@@ -574,6 +574,22 @@ class KtaiHelper extends Helper {
 	}
 	
 	/**
+	 * Google static Maps APIを用いて地図表示
+	 * 詳しくはLib3gkHtml::get_static_maps()を参照
+	 *
+	 * @param $lat string 緯度
+	 * @param $lon string 経度
+	 * @param $options array APIに与えるオプション
+	 * @param $apikey string 取得したGoogle API キー
+	 * @return string imageタグ付き文字列
+	 * @access public
+	 */
+	function get_static_maps($lat, $lon, $options = array(), $api_key = null){
+		return $this->_lib3gk->get_static_maps($lat, $lon, $options, $api_key);
+	}
+	
+	
+	/**
 	 * 端末UIDの入手
 	 * 詳しくはLib3gkTools::get_uid()を参照
 	 *

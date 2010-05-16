@@ -347,10 +347,9 @@ class Lib3gkHtml {
 	
 	/**
 	 * Google static Maps APIを用いて地図表示
-	 * 詳しくはLib3gkHtml::get_qrcode()を参照
 	 *
-	 * @param $lat string 
-	 * @param $lon string 
+	 * @param $lat string 緯度
+	 * @param $lon string 経度
 	 * @param $options array APIに与えるオプション
 	 * @param $apikey string 取得したGoogle API キー
 	 * @return string imageタグ付き文字列
