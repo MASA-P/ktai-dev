@@ -20,12 +20,13 @@
  */
 
 App::import('Vendor', 'ecw/Lib3gkCarrier');
-App::import('Controller', 'Ktaipages');
+App::import('Controller', 'KtaiTests');
 
 App::import('Component', 'Ktai');
 
 class KtaiComponentTest extends CakeTestCase {
 	var $controller = null;
+	var $view       = null;
 	var $ktai       = null;
 	
 	var $security_level = 'high';
@@ -35,11 +36,10 @@ class KtaiComponentTest extends CakeTestCase {
 		$carrier = Lib3gkCarrier::get_instance();
 		$carrier->_carrier = KTAI_CARRIER_DOCOMO;
 		
-		$this->controller = new KtaipagesController();
+		Router::reload();
+		$this->controller = new KtaiTestsController();
 		$this->controller->constructClasses();
-		$this->controller->ktai = array(
-			'use_img_emoji' => true, 
-		);
+		
 		Configure::write('Security.level', $this->security_level);
 		
 		$this->controller->Component->initialize($this->controller);
@@ -49,6 +49,9 @@ class KtaiComponentTest extends CakeTestCase {
 	}
 	
 	function stop(){
+		unset($this->view);
+		unset($this->controller);
+		ClassRegistry::flush();
 	}
 	
 	function testInitialize(){

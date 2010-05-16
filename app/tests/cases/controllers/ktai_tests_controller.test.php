@@ -20,62 +20,64 @@
  */
 
 App::import('Vendor', 'ecw/Lib3gkCarrier');
-App::import('Controller', 'Ktaipages');
+App::import('Controller', 'KtaiTests');
 
-class TestKtaiPagesController extends CakeTestCase {
+class TestKtaiTestsController extends CakeTestCase {
 	
 	var $carrier   = null;
-	var $Ktaipages = null;
+	var $controller = null;
 	
 	function start(){
 		$this->carrier = Lib3gkCarrier::get_instance();
 		$this->carrier->_carrier = KTAI_CARRIER_DOCOMO;
 		
-		$this->Ktaipages = new KtaipagesController();
-		$this->Ktaipages->constructClasses();
-		$this->Ktaipages->Component->initialize($this->Ktaipages);
-		$this->Ktaipages->Component->startup($this->Ktaipages);
+		Router::reload();
+		$this->controller =& new KtaiTestsController();
+		$this->controller->constructClasses();
+		$this->controller->Component->initialize($this->controller);
+		$this->controller->Component->startup($this->controller);
 	}
 	
 	function stop(){
-		unset($this->Ktaipages);
+		unset($this->controller);
 		ClassRegistry::flush();
 	}
 	
 	function testIndex(){
 		$url = array(
-			'controller' => 'ktaipages', 
+			'controller' => 'ktai_tests', 
 			'action' => 'index', 
 		);
 		
-		$test_url = $this->Ktaipages->__redirect_url($url);
+		$test_url = $this->controller->__redirect_url($url);
 		$result = is_array($test_url) && 
-			$test_url['controller'] == 'ktaipages' && 
+			$test_url['controller'] == 'ktai_tests' && 
 			$test_url['action'] == 'index' && 
 			isset($test_url['?']['csid']);
 		$this->assertTrue($result);
 		
 		$url['?'] = array('testvalue' => 5);
-		$test_url = $this->Ktaipages->__redirect_url($url);
+		$test_url = $this->controller->__redirect_url($url);
 		$result = is_array($test_url) && 
-			$test_url['controller'] == 'ktaipages' && 
+			$test_url['controller'] == 'ktai_tests' && 
 			$test_url['action'] == 'index' && 
 			isset($test_url['?']['csid']) && 
 			$test_url['?']['testvalue'] == 5;
 		$this->assertTrue($result);
 		
-		$url = '/ktaipages/index/5';
-		$test_url = $this->Ktaipages->__redirect_url($url);
+		$url = '/ktai_tests/index/5';
+		$test_url = $this->controller->__redirect_url($url);
 		$result = is_array($test_url) && 
-			$test_url['controller'] == 'ktaipages' && 
+			$test_url['controller'] == 'ktai_tests' && 
 			$test_url['action'] == 'index' && 
 			isset($test_url['?']['csid']) && 
 			$test_url['pass'][0] == 5;
 		$this->assertTrue($result);
 		
 		$url = 'http://www.google.com/';
-		$test_url = $this->Ktaipages->__redirect_url($url);
+		$test_url = $this->controller->__redirect_url($url);
 		$this->assertEqual($test_url, $url);
 		
 	}
+	
 }

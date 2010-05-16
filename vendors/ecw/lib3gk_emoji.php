@@ -2497,7 +2497,7 @@ class Lib3gkEmoji {
 			$output_encoding = $this->_params['output_encoding'];
 		}
 		if($binary === null){
-			$binary = false;
+			$binary = $this->_params['use_binary_emoji'];
 		}
 		
 		$options = compact('input_carrier', 'output_carrier', 'input_encoding', 'output_encoding', 'binary');

@@ -11,7 +11,7 @@
 <?php echo $content_for_layout; ?>
 <div align="center">
 <hr width="90%" size="1" color="#333333" noshade>
-(C)2009 <a href="http://shop.example.com/">MyShop</a>
+(C)2009-2010 <a href="http://www.ecworks.jp/">ECWorks</a>
 </div>
 <?php if(!$ktai->is_ktai()){ ?></div><?php } ?>
 </body>
