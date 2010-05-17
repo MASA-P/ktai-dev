@@ -60,11 +60,16 @@ class KtaiComponent extends Object {
 	 * @access protected
 	 */
 	var $_options = array(
-		'img_emoji_url' => "/img/emoticons/", 
 		'enable_ktai_session' => true, 
 		'use_redirect_session_id' => false, 
 		'imode_session_name' => 'csid', 
 		'session_save' => 'php', 
+		
+		'output_auto_encoding' => false, 
+		'output_auto_convert_emoji' => false, 
+		'output_convert_kana' => false, 
+		
+		'img_emoji_url' => "/img/emoticons/", 
 	);
 	
 	
@@ -126,6 +131,35 @@ class KtaiComponent extends Object {
 	 * @access public
 	 */
 	function shutdown(&$controller){
+		
+		$out = $controller->output;
+		
+		$input_encoding  = $this->_options['input_encoding'];
+		$output_encoding = $this->_options['output_encoding'];
+		
+		if($this->_options['output_convert_kana'] != false){
+			$out = mb_convert_kana(
+				$out, 
+				$this->_options['output_convert_kana'], 
+				$input_encoding
+			);
+		}
+		
+		if($this->_options['output_auto_convert_emoji']){
+			$this->convert_emoji($out);
+		}else{
+			if($this->_options['output_auto_encoding'] && 
+				($input_encoding != $output_encoding)){
+				$out = mb_convert_encoding(
+					$out, 
+					$output_encoding, 
+					$input_encoding
+				);
+			}
+		}
+		
+		$controller->output = $out;
+	
 		$this->_lib3gk->shutdown();
 	}
 	

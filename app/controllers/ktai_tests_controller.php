@@ -26,7 +26,7 @@ class KtaiTestsController extends KtaiAppController {
 	var $uses = array();
 	var $components = array('Ktai');
 	var $helpers = array('Ktai');
-	var $layout = 'ktai_default';
+	var $layout = 'ktai_test';
 	
 	//Sample ktai params
 	//

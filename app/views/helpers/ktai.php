@@ -61,10 +61,6 @@ class KtaiHelper extends Helper {
 	 */
 	var $options = array(
 		'img_emoji_url' => "/img/emoticons/", 
-		
-		'output_auto_encoding' => false, 
-		'output_auto_convert_emoji' => false, 
-		'output_convert_kana' => false, 
 	);
 	
 	//================================================================
@@ -96,48 +92,6 @@ class KtaiHelper extends Helper {
 		}
 		$this->options = &$this->_lib3gk->_params;
 	}
-	
-	/**
-	 * afterRenderコールバック
-	 *
-	 * @return (なし)
-	 * @access public
-	 */
-	function afterRender(){
-		
-		parent::afterRender();
-		
-		$out = ob_get_clean();
-		$input_encoding  = $this->options['input_encoding'];
-		$output_encoding = $this->options['output_encoding'];
-		
-		if($this->options['output_convert_kana'] != false){
-			$out = mb_convert_kana(
-				$out, 
-				$this->options['output_convert_kana'], 
-				$input_encoding
-			);
-		}
-		
-		if($this->options['output_auto_convert_emoji']){
-			$this->convert_emoji($out);
-		}else{
-			if($this->options['output_auto_encoding'] && 
-				($input_encoding != $output_encoding)){
-				$out = mb_convert_encoding(
-					$out, 
-					$output_encoding, 
-					$input_encoding
-				);
-			}
-		}
-		
-		ob_start();
-		echo $out;
-		
-		$this->_lib3gk->shutdown();
-	}
-	
 	
 	//------------------------------------------------
 	//Ktai Library methods

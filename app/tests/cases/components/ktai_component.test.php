@@ -20,6 +20,7 @@
  */
 
 App::import('Vendor', 'ecw/Lib3gkCarrier');
+App::import('Vendor', 'ecw/Lib3gkTools');
 App::import('Controller', 'KtaiTests');
 
 App::import('Component', 'Ktai');
@@ -63,6 +64,106 @@ class KtaiComponentTest extends CakeTestCase {
 		$this->controller->ktai['use_img_emoji'] = false;
 		$this->assertEqual($this->ktai->_options['use_img_emoji'], $this->controller->ktai['use_img_emoji']);
 		$this->assertEqual($this->ktai->_options['img_emoji_url'], "/img/emoticons/");
+	}
+	
+	function testAutoConvert(){
+		
+		$carrier = Lib3gkCarrier::get_instance();
+		$carrier->_carrier = KTAI_CARRIER_KDDI;
+		$tools = Lib3gkTools::get_instance();
+		
+		$title = 'Ｋｔａｉ　Ｌｉｂｒａｒｙ　テスト中';
+		$text  = 'Ａｕｔｏ　Ｃｏｎｖｅｒｔテスト０１２３';
+		
+		//通常のレンダリング
+		//
+		$this->ktai->_options = array_merge($this->ktai->_options, array(
+			'use_binary_emoji' => true, 
+			'output_convert_kana' => 'knrs', 
+			'output_auto_convert_emoji' => true, 
+			'input_encoding' => KTAI_ENCODING_UTF8, 
+			'output_encoding' => KTAI_ENCODING_SJISWIN, 
+		));
+		
+		$str_title = mb_convert_encoding($title, KTAI_ENCODING_SJISWIN, KTAI_ENCODING_UTF8);
+		$str_title = mb_convert_kana($str_title, 'knrs', KTAI_ENCODING_SJISWIN);
+		$str_text = mb_convert_encoding($text, KTAI_ENCODING_SJISWIN, KTAI_ENCODING_UTF8);
+		$str_text = mb_convert_kana($str_text, 'knrs', KTAI_ENCODING_SJISWIN);
+		$emoji_text = $tools->int2str(0xf485);
+		
+		$this->controller->output = '';
+		$this->controller->render('autoconv');
+		$this->controller->Component->shutdown($this->controller);
+		$html = $this->controller->output;
+		
+		$this->assertTrue(preg_match('/'.$str_title.'/', $html));
+		$this->assertTrue(preg_match('/'.$str_text.'/', $html));
+		$this->assertTrue(preg_match('/'.$emoji_text.'/', $html));
+		
+		//レイアウトの無い場合のレンダリング
+		//
+		$this->controller->output = '';
+		$this->controller->render('autoconv', false);
+		$this->controller->Component->shutdown($this->controller);
+		$html = $this->controller->output;
+		
+		$this->assertTrue(preg_match('/'.$str_text.'/', $html));
+		$this->assertTrue(preg_match('/'.$emoji_text.'/', $html));
+		
+		//数値文字参照を用いる場合
+		//
+		$this->ktai->_options = array_merge($this->ktai->_options, array(
+			'use_binary_emoji' => false, 
+		));
+		
+		$emoji_text = '&#62597;';
+		
+		$this->controller->output = '';
+		$this->controller->render('autoconv');
+		$this->controller->Component->shutdown($this->controller);
+		$html = $this->controller->output;
+		
+		$this->assertTrue(preg_match('/'.$str_title.'/', $html));
+		$this->assertTrue(preg_match('/'.$str_text.'/', $html));
+		$this->assertTrue(preg_match('/'.$emoji_text.'/', $html));
+		
+		//かな変換をしない場合
+		//
+		$this->ktai->_options = array_merge($this->ktai->_options, array(
+			'output_convert_kana' => false, 
+		));
+		
+		$str_title = mb_convert_encoding($title, KTAI_ENCODING_SJISWIN, KTAI_ENCODING_UTF8);
+		$str_text = mb_convert_encoding($text, KTAI_ENCODING_SJISWIN, KTAI_ENCODING_UTF8);
+		
+		$this->controller->output = '';
+		$this->controller->render('autoconv');
+		$this->controller->Component->shutdown($this->controller);
+		$html = $this->controller->output;
+		
+		$this->assertTrue(preg_match('/'.$str_title.'/', $html));
+		$this->assertTrue(preg_match('/'.$str_text.'/', $html));
+		$this->assertTrue(preg_match('/'.$emoji_text.'/', $html));
+		
+		//絵文字の自動変換はしないけどエンコード変換をする場合
+		//
+		$this->ktai->_options = array_merge($this->ktai->_options, array(
+			'output_auto_convert_emoji' => false, 
+			'output_auto_encoding' => true, 
+		));
+		
+		$str_title = mb_convert_encoding($title, KTAI_ENCODING_SJISWIN, KTAI_ENCODING_UTF8);
+		$str_text = mb_convert_encoding($text, KTAI_ENCODING_SJISWIN, KTAI_ENCODING_UTF8);
+		
+		$this->controller->output = '';
+		$this->controller->render('autoconv');
+		$this->controller->Component->shutdown($this->controller);
+		$html = $this->controller->output;
+		
+		$this->assertTrue(preg_match('/'.$str_title.'/', $html));
+		$this->assertTrue(preg_match('/'.$str_text.'/', $html));
+		$this->assertFalse(preg_match('/'.$emoji_text.'/', $html));
+		
 	}
 	
 }
