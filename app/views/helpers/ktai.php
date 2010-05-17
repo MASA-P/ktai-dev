@@ -107,8 +107,6 @@ class KtaiHelper extends Helper {
 		
 		parent::afterRender();
 		
-		var_dump($this->options);
-		
 		$out = ob_get_clean();
 		$input_encoding  = $this->options['input_encoding'];
 		$output_encoding = $this->options['output_encoding'];

@@ -114,7 +114,6 @@ class TestLib3gkHtml extends CakeTestCase {
 		);
 		$this->Lib3gkHtml->_params['google_api_key'] = '0123456789';
 		$result = $this->Lib3gkHtml->get_static_maps($lat, $lon, $options);
-//		var_dump($result);
 	}
 	
 }
