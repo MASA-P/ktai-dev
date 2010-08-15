@@ -1,6 +1,6 @@
 <?php
 /**
- * Short description for file.
+ * Dbo Source
  *
  * PHP versions 4 and 5
  *
@@ -53,7 +53,10 @@ class DboSource extends DataSource {
 	var $alias = 'AS ';
 
 /**
- * Caches result from query parsing operations
+ * Caches result from query parsing operations.  Cached results for both DboSource::name() and
+ * DboSource::conditions() will be stored here.  Method caching uses `crc32()` which is 
+ * fast but can collisions more easily than other hashing algorithms.  If you have problems
+ * with collisions, set DboSource::$cacheMethods to false.
  *
  * @var array
  * @access public
@@ -96,6 +99,13 @@ class DboSource extends DataSource {
 		'commit' => 'COMMIT',
 		'rollback' => 'ROLLBACK'
 	);
+
+/**
+ * Separator string for virtualField composition
+ *
+ * @var string
+ */
+	var $virtualFieldSeparator = '__';
 
 /**
  * List of table engine specific parameters used on table creating
@@ -432,10 +442,10 @@ class DboSource extends DataSource {
 	function fetchVirtualField(&$result) {
 		if (isset($result[0]) && is_array($result[0])) {
 			foreach ($result[0] as $field => $value) {
-				if (strpos($field, '__') === false) {
+				if (strpos($field, $this->virtualFieldSeparator) === false) {
 					continue;
 				}
-				list($alias, $virtual) = explode('__', $field);
+				list($alias, $virtual) = explode($this->virtualFieldSeparator, $field);
 
 				if (!ClassRegistry::isKeySet($alias)) {
 					return;
@@ -505,7 +515,12 @@ class DboSource extends DataSource {
  * Returns a quoted name of $data for use in an SQL statement.
  * Strips fields out of SQL functions before quoting.
  *
- * @param string $data
+ * Results of this method are stored in a memory cache.  This improves performance, but
+ * because the method uses a simple hashing algorithm it can infrequently have collisions.
+ * Setting DboSource::$cacheMethods to false will disable the memory cache.
+ *
+ * @param mixed $data Either a string with a column to quote. An array of columns to quote or an 
+ *   object from DboSource::expression() or DboSource::identifier()
  * @return string SQL field
  * @access public
  */
@@ -826,7 +841,7 @@ class DboSource extends DataSource {
 						$db =& $this;
 					}
 
-					if (isset($db)) {
+					if (isset($db) && method_exists($db, 'queryAssociation')) {
 						$stack = array($assoc);
 						$db->queryAssociation($model, $linkModel, $type, $assoc, $assocData, $array, true, $resultSet, $model->recursive - 1, $stack);
 						unset($db);
@@ -917,6 +932,7 @@ class DboSource extends DataSource {
 				}
 
 				if (!empty($ins)) {
+					$ins = array_unique($ins);
 					$fetch = $this->fetchAssociated($model, $query, $ins);
 				}
 
@@ -948,9 +964,9 @@ class DboSource extends DataSource {
 					}
 				}
 				if (!empty($ins)) {
+					$ins = array_unique($ins);
 					if (count($ins) > 1) {
 						$query = str_replace('{$__cakeID__$}', '(' .implode(', ', $ins) .')', $query);
-						$query = str_replace('= (', 'IN (', $query);
 						$query = str_replace('= (', 'IN (', $query);
 					} else {
 						$query = str_replace('{$__cakeID__$}',$ins[0], $query);
@@ -1052,7 +1068,6 @@ class DboSource extends DataSource {
 	function fetchAssociated($model, $query, $ids) {
 		$query = str_replace('{$__cakeID__$}', implode(', ', $ids), $query);
 		if (count($ids) > 1) {
-			$query = str_replace('= (', 'IN (', $query);
 			$query = str_replace('= (', 'IN (', $query);
 		}
 		return $this->fetchAll($query, $model->cacheQueries, $model->alias);
@@ -1201,10 +1216,10 @@ class DboSource extends DataSource {
 		} elseif (!empty($model->hasMany) && $model->recursive > -1) {
 			$assocFields = $this->fields($model, $model->alias, array("{$model->alias}.{$model->primaryKey}"));
 			$passedFields = $this->fields($model, $model->alias, $queryData['fields']);
-
 			if (count($passedFields) === 1) {
 				$match = strpos($passedFields[0], $assocFields[0]);
-				$match1 = strpos($passedFields[0], 'COUNT(');
+				$match1 = (bool)preg_match('/^[a-z]+\(/i', $passedFields[0]);
+
 				if ($match === false && $match1 === false) {
 					$queryData['fields'] = array_merge($passedFields, $assocFields);
 				} else {
@@ -1902,7 +1917,7 @@ class DboSource extends DataSource {
 	function _constructVirtualFields(&$model, $alias, $fields) {
 		$virtual = array();
 		foreach ($fields as $field) {
-			$virtualField = $this->name("{$alias}__{$field}");
+			$virtualField = $this->name($alias . $this->virtualFieldSeparator . $field);
 			$expression = $this->__quoteFields($model->getVirtualField($field));
 			$virtual[] = '(' .$expression . ") {$this->alias} {$virtualField}";
 		}
@@ -2043,6 +2058,10 @@ class DboSource extends DataSource {
  * conditions are provided those conditions will be parsed and quoted.  If a boolean
  * is given it will be integer cast as condition.  Null will return 1 = 1.
  *
+ * Results of this method are stored in a memory cache.  This improves performance, but
+ * because the method uses a simple hashing algorithm it can infrequently have collisions.
+ * Setting DboSource::$cacheMethods to false will disable the memory cache.
+ *
  * @param mixed $conditions Array or string of conditions, or any value.
  * @param boolean $quoteValues If true, values should be quoted
  * @param boolean $where If true, "WHERE " will be prepended to the return value
@@ -2172,7 +2191,7 @@ class DboSource extends DataSource {
 					}
 				} elseif (is_array($value) && !empty($value) && !$valueInsert) {
 					$keys = array_keys($value);
-					if (array_keys($value) === array_values(array_keys($value))) {
+					if ($keys === array_values($keys)) {
 						$count = count($value);
 						if ($count === 1) {
 							$data = $this->__quoteFields($key) . ' = (';
@@ -2404,6 +2423,9 @@ class DboSource extends DataSource {
 					}
 				}
 				continue;
+			} elseif (is_object($key) && isset($key->type) && $key->type === 'expression') {
+				$result[] = $key->value;
+				continue;
 			}
 
 			if (preg_match('/\\x20(ASC|DESC).*/i', $key, $_dir)) {
@@ -2411,17 +2433,17 @@ class DboSource extends DataSource {
 				$key = preg_replace('/\\x20(ASC|DESC).*/i', '', $key);
 			}
 
+			$key = trim($key);
+
+			if (is_object($model) && $model->isVirtualField($key)) {
+				$key =  '(' . $this->__quoteFields($model->getVirtualField($key)) . ')';
+			}
+
 			if (strpos($key, '.')) {
 				$key = preg_replace_callback('/([a-zA-Z0-9_]{1,})\\.([a-zA-Z0-9_]{1,})/', array(&$this, '__quoteMatchedField'), $key);
 			}
-
-			$key = trim($key);
-			if (!preg_match('/\s/', $key) && !strpos($key,'.')) {
-				if (is_object($model) && $model->isVirtualField($key)) {
-					$key =  '('.$this->__quoteFields($model->getVirtualField($key)).')';
-				} else {
-					$key = $this->name($key);
-				}
+			if (!preg_match('/\s/', $key) && !strpos($key, '.')) {
+				$key = $this->name($key);
 			}
 			$key .= ' ' . trim($dir);
 			$result[] = $key;
@@ -2902,4 +2924,3 @@ class DboSource extends DataSource {
 		return 'string';
 	}
 }
-?>

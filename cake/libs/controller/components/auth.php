@@ -469,7 +469,7 @@ class AuthComponent extends Object {
 			'loginAction' => array(
 				'controller' => Inflector::underscore(Inflector::pluralize($model)),
 				'action' => 'login',
-				'plugin' => $plugin,
+				'plugin' => Inflector::underscore($plugin),
 			),
 			'sessionKey' => 'Auth.' . $model,
 			'logoutRedirect' => $this->loginAction,
@@ -958,4 +958,3 @@ class AuthComponent extends Object {
 		}
 	}
 }
-?>

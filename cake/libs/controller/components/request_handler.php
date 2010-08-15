@@ -260,9 +260,10 @@ class RequestHandlerComponent extends Object {
  *
  * @param object $controller A reference to the controller
  * @param mixed $url A string or array containing the redirect location
+ * @param mixed HTTP Status for redirect
  * @access public
  */
-	function beforeRedirect(&$controller, $url) {
+	function beforeRedirect(&$controller, $url, $status = null) {
 		if (!$this->isAjax()) {
 			return;
 		}
@@ -272,7 +273,13 @@ class RequestHandlerComponent extends Object {
 		if (is_array($url)) {
 			$url = Router::url($url + array('base' => false));
 		}
-		echo $this->requestAction($url, array('return'));
+		if (!empty($status)) {
+			$statusCode = $controller->httpCodes($status);
+			$code = key($statusCode);
+			$msg = $statusCode[$code];
+			$controller->header("HTTP/1.1 {$code} {$msg}");
+		}
+		echo $this->requestAction($url, array('return', 'bare' => false));
 		$this->_stop();
 	}
 
@@ -683,7 +690,6 @@ class RequestHandlerComponent extends Object {
  *    like 'application/x-shockwave'.
  * @param array $options If $type is a friendly type name that is associated with
  *    more than one type of content, $index is used to select which content-type to use.
- *
  * @return boolean Returns false if the friendly type name given in $type does
  *    not exist in the type map, or if the Content-type header has
  *    already been set by this method.
@@ -692,9 +698,6 @@ class RequestHandlerComponent extends Object {
  */
 	function respondAs($type, $options = array()) {
 		$this->__initializeTypes();
-		if ($this->__responseTypeSet != null) {
-			return false;
-		}
 		if (!array_key_exists($type, $this->__requestContent) && strpos($type, '/') === false) {
 			return false;
 		}
@@ -731,15 +734,26 @@ class RequestHandlerComponent extends Object {
 				$header .= '; charset=' . $options['charset'];
 			}
 			if (!empty($options['attachment'])) {
-				header("Content-Disposition: attachment; filename=\"{$options['attachment']}\"");
+				$this->_header("Content-Disposition: attachment; filename=\"{$options['attachment']}\"");
 			}
 			if (Configure::read() < 2 && !defined('CAKEPHP_SHELL')) {
-				@header($header);
+				$this->_header($header);
 			}
 			$this->__responseTypeSet = $cType;
 			return true;
 		}
 		return false;
+	}
+
+/**
+ * Wrapper for header() so calls can be easily tested.
+ *
+ * @param string $header The header to be sent.
+ * @return void
+ * @access protected
+ */
+	function _header($header) {
+		header($header);
 	}
 
 /**
@@ -808,5 +822,3 @@ class RequestHandlerComponent extends Object {
 		$this->__typesInitialized = true;
 	}
 }
-
-?>

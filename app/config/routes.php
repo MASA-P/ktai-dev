@@ -1,6 +1,6 @@
 <?php
 /**
- * Short description for file.
+ * Routes configuration
  *
  * In this file, you set up routes to your controllers and their actions.
  * Routes are very important mechanism that allows you to freely connect
@@ -31,4 +31,3 @@
  * ...and connect the rest of 'Pages' controller's urls.
  */
 	Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
-?>

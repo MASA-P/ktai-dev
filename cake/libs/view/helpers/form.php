@@ -148,7 +148,7 @@ class FormHelper extends AppHelper {
 		if (is_array($validateProperties)) {
 
 			$dims = Set::countDim($validateProperties);
-			if ($dims == 1) {
+			if ($dims == 1 || ($dims == 2 && isset($validateProperties['rule']))) {
 				$validateProperties = array($validateProperties);
 			}
 
@@ -213,7 +213,7 @@ class FormHelper extends AppHelper {
 			}
 		}
 
-		$object =& $this->_introspectModel($model);
+		$object = $this->_introspectModel($model);
 		$this->setEntity($model . '.', true);
 
 		$modelEntity = $this->model();
@@ -260,7 +260,7 @@ class FormHelper extends AppHelper {
 				0 => $id
 			);
 			if (!empty($options['action']) && !isset($options['id'])) {
-				$options['id'] = $model . Inflector::camelize($options['action']) . 'Form';
+				$options['id'] = $this->domId($options['action'] . 'Form');
 			}
 			$options['action'] = array_merge($actionDefaults, (array)$options['url']);
 		} elseif (is_string($options['url'])) {
@@ -306,6 +306,7 @@ class FormHelper extends AppHelper {
 		unset($options['default']);
 		$htmlAttributes = array_merge($options, $htmlAttributes);
 
+		$this->fields = array();
 		if (isset($this->params['_Token']) && !empty($this->params['_Token'])) {
 			$append .= $this->hidden('_Token.key', array(
 				'value' => $this->params['_Token']['key'], 'id' => 'Token' . mt_rand())
@@ -586,6 +587,13 @@ class FormHelper extends AppHelper {
  *	));
  * }}}
  *
+ * In addition to fields control, inputs() allows you to use a few additional options.
+ *
+ * - `fieldset` Set to false to disable the fieldset. If a string is supplied it will be used as 
+ *    the classname for the fieldset element.
+ * - `legend` Set to false to disable the legend for the generated input set. Or supply a string
+ *    to customize the legend text.
+ *
  * @param mixed $fields An array of fields to generate inputs for, or null.
  * @param array $blacklist a simple array of fields to not create inputs for.
  * @return string Completed form inputs.
@@ -684,9 +692,10 @@ class FormHelper extends AppHelper {
  * - `after` - Content to place after the label + input.
  * - `between` - Content to place between the label + input.
  * - `format` - format template for element order. Any element that is not in the array, will not be in the output.
- *     Default input format order: array('before', 'label', 'between', 'input', 'after', 'error')
- *     Default checkbox format order: array('before', 'input', 'between', 'label', 'after', 'error')
- *     Hidden input will not be formatted
+ *    - Default input format order: array('before', 'label', 'between', 'input', 'after', 'error')
+ *    - Default checkbox format order: array('before', 'input', 'between', 'label', 'after', 'error')
+ *    - Hidden input will not be formatted
+ *    - Radio buttons cannot have the order of input and label elements controlled with these settings.
  *
  * @param string $fieldName This should be "Modelname.fieldname"
  * @param array $options Each type of input takes different options.
@@ -739,7 +748,7 @@ class FormHelper extends AppHelper {
 					$options['type'] = 'hidden';
 				}
 			}
-			if (preg_match('/_id$/', $fieldKey)) {
+			if (preg_match('/_id$/', $fieldKey) && $options['type'] !== 'hidden') {
 				$options['type'] = 'select';
 			}
 
@@ -2178,5 +2187,3 @@ class FormHelper extends AppHelper {
 		return $result;
 	}
 }
-
-?>

@@ -162,7 +162,7 @@ class Dispatcher extends Object {
 		} else {
 			$controller->data = null;
 		}
-		if (array_key_exists('return', $this->params) && $this->params['return'] == 1) {
+		if (isset($this->params['return']) && $this->params['return'] == 1) {
 			$controller->autoRender = false;
 		}
 		if (!empty($this->params['bare'])) {
@@ -556,8 +556,14 @@ class Dispatcher extends Object {
 			return false;
 		}
 		$filters = Configure::read('Asset.filter');
-		$isCss = strpos($url, 'ccss/') === 0;
-		$isJs = strpos($url, 'cjs/') === 0;
+		$isCss = (
+			strpos($url, 'ccss/') === 0 || 
+			preg_match('#^(theme/([^/]+)/ccss/)|(([^/]+)(?<!css)/ccss)/#i', $url)
+		);
+		$isJs = (
+			strpos($url, 'cjs/') === 0 ||
+			preg_match('#^/((theme/[^/]+)/cjs/)|(([^/]+)(?<!js)/cjs)/#i', $url)
+		);
 
 		if (($isCss && empty($filters['css'])) || ($isJs && empty($filters['js']))) {
 			header('HTTP/1.1 404 Not Found');
@@ -577,20 +583,15 @@ class Dispatcher extends Object {
 		if ($parts[0] === 'theme') {
 			$themeName = $parts[1];
 			unset($parts[0], $parts[1]);
-			$fileFragment = implode('/', $parts);
-
-			$viewPaths = App::path('views');
-			foreach ($viewPaths as $viewPath) {
-				$path = $viewPath . 'themed' . DS . $themeName . DS . 'webroot' . DS;
-				if (file_exists($path . $fileFragment)) {
-					$assetFile = $path . $fileFragment;
-					break;
-				}
+			$fileFragment = implode(DS, $parts);
+			$path = App::themePath($themeName) . 'webroot' . DS;
+			if (file_exists($path . $fileFragment)) {
+				$assetFile = $path . $fileFragment;
 			}
 		} else {
 			$plugin = $parts[0];
 			unset($parts[0]);
-			$fileFragment = implode('/', $parts);
+			$fileFragment = implode(DS, $parts);
 			$pluginWebroot = App::pluginPath($plugin) . 'webroot' . DS;
 			if (file_exists($pluginWebroot . $fileFragment)) {
 				$assetFile = $pluginWebroot . $fileFragment;
@@ -614,12 +615,14 @@ class Dispatcher extends Object {
  */
 	function _deliverAsset($assetFile, $ext) {
 		$ob = @ini_get("zlib.output_compression") !== '1' && extension_loaded("zlib") && (strpos(env('HTTP_ACCEPT_ENCODING'), 'gzip') !== false);
-		if ($ob && Configure::read('Asset.compress')) {
+		$compressionEnabled = $ob && Configure::read('Asset.compress');
+		if ($compressionEnabled) {
 			ob_start();
 			ob_start('ob_gzhandler');
 		}
 
 		App::import('View', 'Media', false);
+		$controller = null;
 		$Media = new MediaView($controller);
 		if (isset($Media->mimeType[$ext])) {
 			$contentType = $Media->mimeType[$ext];
@@ -640,13 +643,14 @@ class Dispatcher extends Object {
 		if ($ext === 'css' || $ext === 'js') {
 			include($assetFile);
 		} else {
+			if ($compressionEnabled) {
+				ob_clean();
+			}
 			readfile($assetFile);
 		}
 
-		if (Configure::read('Asset.compress')) {
+		if ($compressionEnabled) {
 			ob_end_flush();
 		}
 	}
-
 }
-?>

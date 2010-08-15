@@ -510,14 +510,16 @@ class Model extends Overloadable {
 /**
  * Bind model associations on the fly.
  *
- * If $reset is false, association will not be reset
+ * If `$reset` is false, association will not be reset
  * to the originals defined in the model
  *
  * Example: Add a new hasOne binding to the Profile model not
  * defined in the model source code:
- * <code>
- * $this->User->bindModel( array('hasOne' => array('Profile')) );
- * </code>
+ *
+ * `$this->User->bindModel( array('hasOne' => array('Profile')) );`
+ *
+ * Bindings that are not made permanent will be reset by the next Model::find() call on this
+ * model.
  *
  * @param array $params Set of bindings (indexed by binding type)
  * @param boolean $reset Set to false to make the binding permanent
@@ -527,10 +529,9 @@ class Model extends Overloadable {
  */
 	function bindModel($params, $reset = true) {
 		foreach ($params as $assoc => $model) {
-			if ($reset === true) {
+			if ($reset === true && !isset($this->__backAssociation[$assoc])) {
 				$this->__backAssociation[$assoc] = $this->{$assoc};
 			}
-
 			foreach ($model as $key => $value) {
 				$assocName = $key;
 
@@ -540,6 +541,10 @@ class Model extends Overloadable {
 				}
 				$modelName = $assocName;
 				$this->{$assoc}[$assocName] = $value;
+
+				if ($reset === false && isset($this->__backAssociation[$assoc])) {
+					$this->__backAssociation[$assoc][$assocName] = $value;
+				}
 			}
 		}
 		$this->__createLinks();
@@ -554,9 +559,10 @@ class Model extends Overloadable {
  *
  * Example: Turn off the associated Model Support request,
  * to temporarily lighten the User model:
- * <code>
- * $this->User->unbindModel( array('hasMany' => array('Supportrequest')) );
- * </code>
+ * 
+ * `$this->User->unbindModel( array('hasMany' => array('Supportrequest')) );`
+ * 
+ * unbound models that are not made permanent will reset with the next call to Model::find()
  *
  * @param array $params Set of bindings to unbind (indexed by binding type)
  * @param boolean $reset  Set to false to make the unbinding permanent
@@ -566,14 +572,14 @@ class Model extends Overloadable {
  */
 	function unbindModel($params, $reset = true) {
 		foreach ($params as $assoc => $models) {
-			if ($reset === true) {
+			if ($reset === true && !isset($this->__backAssociation[$assoc])) {
 				$this->__backAssociation[$assoc] = $this->{$assoc};
 			}
-
 			foreach ($models as $model) {
-				$this->__backAssociation = array_merge($this->__backAssociation, $this->{$assoc});
-				unset ($this->__backAssociation[$model]);
-				unset ($this->{$assoc}[$model]);
+				if ($reset === false && isset($this->__backAssociation[$assoc][$model])) {
+					unset($this->__backAssociation[$assoc][$model]);
+				}
+				unset($this->{$assoc}[$model]);
 			}
 		}
 		return true;
@@ -1278,7 +1284,7 @@ class Model extends Overloadable {
 			}
 		}
 
-		if (isset($this->data[$this->alias][$this->primaryKey]) && empty($this->data[$this->alias][$this->primaryKey])) {
+		if (empty($this->data[$this->alias][$this->primaryKey])) {
 			unset($this->data[$this->alias][$this->primaryKey]);
 		}
 		$fields = $values = array();
@@ -1619,7 +1625,6 @@ class Model extends Overloadable {
 					case ($options['validate'] === 'first'):
 						$options['validate'] = true;
 						$return = array();
-						continue;
 					break;
 					default:
 						if ($options['atomic']) {
@@ -1632,6 +1637,10 @@ class Model extends Overloadable {
 						return $return;
 					break;
 				}
+			}
+			if ($options['atomic'] && !$validates) {
+				$db->rollback($this);
+				return false;
 			}
 			return $return;
 		}
@@ -2335,9 +2344,9 @@ class Model extends Overloadable {
 	}
 
 /**
- * Called only when bindTo<ModelName>() is used.
  * This resets the association arrays for the model back
- * to those originally defined in the model.
+ * to those originally defined in the model. Normally called at the end
+ * of each call to Model::find()
  *
  * @return boolean Success
  * @access public
@@ -3029,4 +3038,3 @@ class Model extends Overloadable {
 if (!defined('CAKEPHP_UNIT_TEST_EXECUTION')) {
 	Overloadable::overload('Model');
 }
-?>

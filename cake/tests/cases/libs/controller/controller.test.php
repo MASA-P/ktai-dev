@@ -391,6 +391,16 @@ class TestComponent extends Object {
  */
 	function shutdown(&$controller) {
 	}
+/**
+ * beforeRender callback
+ *
+ * @return void
+ */
+	function beforeRender(&$controller) {
+		if ($this->viewclass) {
+			$controller->view = $this->viewclass;
+		}
+	}
 }
 
 /**
@@ -440,6 +450,26 @@ class ControllerTest extends CakeTestCase {
  */
 	function endTest() {
 		App::build();
+	}
+
+/**
+ * testLoadModel method
+ *
+ * @access public
+ * @return void
+ */
+	function testLoadModel() {
+		$Controller =& new Controller();
+
+		$this->assertFalse(isset($Controller->ControllerPost));
+
+		$result = $Controller->loadModel('ControllerPost');
+		$this->assertTrue($result);
+		$this->assertTrue(is_a($Controller->ControllerPost, 'ControllerPost'));
+		$this->assertTrue(in_array('ControllerPost', $Controller->modelNames));
+
+		ClassRegistry::flush();
+		unset($Controller);
 	}
 
 /**
@@ -875,6 +905,31 @@ class ControllerTest extends CakeTestCase {
 	}
 
 /**
+ * test that a component beforeRender can change the controller view class.
+ *
+ * @return void
+ */
+	function testComponentBeforeRenderChangingViewClass() {
+		$core = App::core('views');
+		App::build(array(
+			'views' => array(
+				TEST_CAKE_CORE_INCLUDE_PATH . 'tests' . DS . 'test_app' . DS . 'views'. DS,
+				$core[0]
+			)
+		), true);
+		$Controller =& new Controller();
+		$Controller->uses = array();
+		$Controller->components = array('Test');
+		$Controller->constructClasses();
+		$Controller->Test->viewclass = 'Theme';
+		$Controller->viewPath = 'posts';
+		$Controller->theme = 'test_theme';
+		$result = $Controller->render('index');
+		$this->assertPattern('/default test_theme layout/', $result);
+		App::build();
+	}
+
+/**
  * testToBeInheritedGuardmethods method
  *
  * @access public
@@ -1208,12 +1263,29 @@ class ControllerTest extends CakeTestCase {
 
 		$TestController->ControllerComment->invalidate('some_field', 'error_message');
 		$TestController->ControllerComment->invalidate('some_field2', 'error_message2');
-		$comment = new ControllerComment;
+		$comment =& new ControllerComment();
 		$comment->set('someVar', 'data');
 		$result = $TestController->validateErrors($comment);
 		$expected = array('some_field' => 'error_message', 'some_field2' => 'error_message2');
 		$this->assertIdentical($result, $expected);
 		$this->assertEqual($TestController->validate($comment), 2);
+	}
+
+/**
+ * test that validateErrors works with any old model.
+ *
+ * @return void
+ */
+	function testValidateErrorsOnArbitraryModels() {
+		$TestController =& new TestController();
+
+		$Post = new ControllerPost();
+		$Post->validate = array('title' => 'notEmpty');
+		$Post->set('title', '');
+		$result = $TestController->validateErrors($Post);
+
+		$expected = array('title' => 'This field cannot be left blank');
+		$this->assertEqual($result, $expected);
 	}
 
 /**
@@ -1375,4 +1447,3 @@ class ControllerTest extends CakeTestCase {
 		$MockedController->shutdownProcess();
 	}
 }
-?>
