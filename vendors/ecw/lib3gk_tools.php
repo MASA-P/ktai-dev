@@ -312,7 +312,7 @@ class Lib3gkTools {
 				$uid = $_SERVER['HTTP_X_UP_SUBNO'];
 			}
 		}else
-		if($this->__carrier->is_softbank() && !$this->is_iphone()){
+		if($this->__carrier->is_softbank() && !$this->__carrier->is_iphone()){
 			if(isset($_SERVER['HTTP_X_JPHONE_UID'])){
 				$uid = $_SERVER['HTTP_X_JPHONE_UID'];
 			}

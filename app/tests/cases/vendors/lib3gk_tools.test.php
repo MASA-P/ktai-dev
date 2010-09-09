@@ -127,10 +127,13 @@ class TestLib3gkTools extends CakeTestCase {
 	
 	function testGetUid(){
 		
-		//テストが出来ないので省略
+		$carrier = Lib3gkCarrier::get_instance();
+		
+		//#28 softbank jphoneの端末ID取得時にエラー
 		//
+		$carrier->_carrier = KTAI_CARRIER_SOFTBANK;
 		$str = $this->Lib3gkTools->get_uid();
-		$this->assertFalse($str);
+		$this->assertFalse($str);		//PCでは必ずfalseになるのでエラーが出ないことだけを確認
 	}
 	
 }
