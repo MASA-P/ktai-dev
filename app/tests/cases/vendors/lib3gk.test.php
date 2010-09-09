@@ -39,4 +39,9 @@ class TestLib3gk extends CakeTestCase {
 		$this->assertEqual($str, '0.3.2');
 	}
 	
+	function testGetIpCarrier(){
+		$result = $this->Lib3gk->get_ip_carrier();
+		$this->assertTrue(is_integer($result));
+	}
+	
 }

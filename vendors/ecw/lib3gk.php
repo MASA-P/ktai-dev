@@ -812,7 +812,7 @@ class Lib3gk {
 	
 	/**
 	 * IPアドレスからキャリアコードを入手
-	 * 詳しくはLib3gkIp::get_ip_carrier()を参照
+	 * 詳しくはLib3gkIp::ip2carrier()を参照
 	 *
 	 * @param $ip string IPアドレス(xxx.xxx.xxx.xxx)
 	 * @return integer キャリアコード
@@ -820,7 +820,7 @@ class Lib3gk {
 	 */
 	function get_ip_carrier($ip = null){
 		$this->__load_ip();
-		return $this->__ip->get_ip_carrier($ip);
+		return $this->__ip->ip2carrier($ip);
 	}
 	
 	
