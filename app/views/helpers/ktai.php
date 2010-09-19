@@ -133,47 +133,70 @@ class KtaiHelper extends Helper {
 	 *
 	 * @param $title string リンクのタイトルテキスト
 	 * @param $url mixed URL
-	 * @param $htmlAttribute array HTMLアトリビュート
+	 * @param $options array オプション。下記オプションまたはCake準拠のオプション値
 	 * @param $confirmMessage string 確認ダイアログ用のメッセージ(falseで表示しない)
 	 * @param $escapeTitle boolean タイトルをエスケープしたくない場合はfalse
 	 * @return string 生成されたHTMLタグ
 	 * @access public
 	 *
-	 * ※htmlAttributeの値は基本的にCakePHP準拠ですが、次の値を拡張しています
+	 * ※$optionsの値は基本的にCakePHP準拠ですが、次の値を拡張しています
 	 *   'accesskey' 0～9を指定することで先頭に絵文字を挿入します
+	 *   'carrier' キャリアを指定できます
+	 *   'output_encoding' 出力エンコーディングを指定できます
+	 *   'binary' バイナリ絵文字出力のON/OFF指定ができます
 	 *
 	 */
-	function link($title, $url = null, $htmlAttributes = array(), $confirmMessage = false, $escapeTitle = true){
+	function link($title, $url = null, $options = array(), $confirmMessage = false, $escapeTitle = true){
 		
 		$str = '';
 		
-		$this->options['input_encoding'] = $this->_lib3gk->normal_encoding_str($this->options['input_encoding']);
-		$this->options['output_encoding'] = $this->_lib3gk->normal_encoding_str($this->options['output_encoding']);
+		$carrier = null;
+		if(isset($options['carrier'])){
+			$carrier = $options['carrier'];
+			unset($options['carrier']);
+		}
 		
-		if(isset($htmlAttributes['accesskey'])){
-			if(is_numeric($htmlAttributes['accesskey'])){
-				$accesskey = intval($htmlAttributes['accesskey']);
+		$binary = true;
+		if(isset($options['binary'])){
+			$binary = $options['binary'];
+			unset($options['binary']);
+		}
+		
+		$input_encoding = $this->options['input_encoding'];
+		if(isset($options['input_encoding'])){
+			$input_encoding = $options['input_encoding'];
+			unset($options['input_encoding']);
+		}
+		$input_encoding = $this->_lib3gk->normal_encoding_str($input_encoding);
+		
+		$output_encoding = $this->options['output_encoding'];
+		if(isset($options['output_encoding'])){
+			$output_encoding = $options['output_encoding'];
+			unset($options['output_encoding']);
+		}
+		$output_encoding = $this->_lib3gk->normal_encoding_str($output_encoding);
+		
+		if(isset($options['accesskey'])){
+			if(is_numeric($options['accesskey'])){
+				$accesskey = intval($options['accesskey']);
 				if($accesskey >= 0 && $accesskey < 10){
 					if($accesskey == 0){
 						$accesskey += 10;
 					}
-					//
-					$binary = true;
-					if($this->options['output_encoding'] == KTAI_ENCODING_UTF8){
+					if($output_encoding == KTAI_ENCODING_UTF8){
 						$default_code = 0xe6e1;
-						if($this->options['output_auto_encoding']){
-							$binary = false;
-						}
 					}else{
 						$default_code = 0xf986;
 					}
-					$str = $this->emoji($accesskey + $default_code, false, null, null, null, $binary);
+					if($this->options['output_auto_encoding'] && $input_encoding != $output_encoding){
+						$binary = false;
+					}
+					$str = $this->emoji($accesskey + $default_code, false, $carrier, $output_encoding, $binary);
 				}
 			}
-			
 		}
 		
-		return $str.$this->Html->link($title, $url, $htmlAttributes, $confirmMessage, $escapeTitle);
+		return $str.$this->Html->link($title, $url, $options, $confirmMessage, $escapeTitle);
 	}
 	
 	/**

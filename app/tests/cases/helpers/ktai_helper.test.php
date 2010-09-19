@@ -87,6 +87,26 @@ class KtaiHelperTest extends CakeTestCase {
 		$result = $this->ktai->link($title, $url, $htmlAttributes);
 		$this->assertTrue(preg_match('/^\xee\x9b\xa2/', $result));
 		
+		//added $options['carrier']
+		//
+		$carrier->_carrier = KTAI_CARRIER_UNKNOWN;
+		$htmlAttributes['carrier'] = KTAI_CARRIER_DOCOMO;
+		$result = $this->ktai->link($title, $url, $htmlAttributes);
+		$this->assertTrue(preg_match('/^\xee\x9b\xa2/', $result));
+		
+		//added $options['output_encoding']
+		//
+		$this->ktai->options['output_encoding'] = KTAI_ENCODING_SJISWIN;
+		$htmlAttributes['output_encoding'] = KTAI_ENCODING_UTF8;
+		$result = $this->ktai->link($title, $url, $htmlAttributes);
+		$this->assertTrue(preg_match('/^\xee\x9b\xa2/', $result));
+		
+		//added $options['binary']
+		//
+		$htmlAttributes['binary'] = false;
+		$result = $this->ktai->link($title, $url, $htmlAttributes);
+		$this->assertTrue(preg_match('/^&#xe6e2;/', $result));
+		
 	}
 	
 }
