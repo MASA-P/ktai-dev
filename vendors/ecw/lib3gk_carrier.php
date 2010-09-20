@@ -49,6 +49,7 @@ class Lib3gkCarrier {
 		'iphone_user_agent_belongs_to_softbank'  => false, 
 		'iphone_email_belongs_to_ktai_email'     => false, 
 		'iphone_email_belongs_to_softbank_email' => false, 
+		'android_user_agent_belongs_to_ktai'     => false, 
 	);
 	
 	//------------------------------------------------
@@ -221,6 +222,14 @@ class Lib3gkCarrier {
 			$arr['carrier_name'] = 'iPhone';
 			$arr['machine_name'] = 'default';
 		
+		//Android
+		//
+		}else
+		if(strpos($user_agent, 'Android') !== false){
+			$arr['carrier'] = KTAI_CARRIER_ANDROID;
+			$arr['carrier_name'] = 'Android';
+			$arr['machine_name'] = 'default';
+		
 		//PHS
 		//
 		}else
@@ -362,6 +371,18 @@ class Lib3gkCarrier {
 	
 	
 	/**
+	 * Android端末かのチェック
+	 * 詳しくはLib3gkCarrier::is_Android()を参照
+	 *
+	 * @return boolean trueの場合はAndroid端末
+	 * @access public
+	 */
+	function is_android(){
+		return $this->get_carrier() == KTAI_CARRIER_ANDROID;
+	}
+	
+	
+	/**
 	 * 携帯かチェック
 	 *
 	 * @return boolean trueの場合は携帯
@@ -372,7 +393,8 @@ class Lib3gkCarrier {
 				$this->is_softbank() || 
 				$this->is_ezweb() || 
 				$this->is_emobile() || 
-				($this->_params['iphone_user_agent_belongs_to_ktai'] && $this->is_iphone());
+				($this->_params['iphone_user_agent_belongs_to_ktai'] && $this->is_iphone()) ||
+				($this->_params['android_user_agent_belongs_to_ktai'] && $this->is_android());
 	}
 	
 	

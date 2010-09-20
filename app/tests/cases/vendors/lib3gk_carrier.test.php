@@ -73,6 +73,10 @@ class TestLib3gkCarrier extends CakeTestCase {
 		$user_agent = 'Mozilla/3.0(WILLCOM;JRC/WX310J/2;1/1/C128) NetFront/3.3';
 		$arr = $this->Lib3gkCarrier->analyze_user_agent($user_agent);
 		$this->assertEqual($arr['carrier'], KTAI_CARRIER_PHS);
+		
+		$user_agent = 'Mozilla/5.0 (Linux; U; Android 1.6; ja-jp; SonyEricssonSO-01B Build/R1EA018) AppleWebKit/528.5+ (KHTML, like Gecko) Version/3.1.2 Mobile Safari/525.20.1';
+		$arr = $this->Lib3gkCarrier->analyze_user_agent($user_agent);
+		$this->assertEqual($arr['carrier'], KTAI_CARRIER_ANDROID);
 	}
 	
 	function testGetCarrier(){
@@ -111,6 +115,10 @@ class TestLib3gkCarrier extends CakeTestCase {
 		$test_value = $this->Lib3gkCarrier->get_carrier(null, true);
 		$this->assertEqual($test_value, KTAI_CARRIER_UNKNOWN);
 		
+		$user_agent = 'Mozilla/5.0 (Linux; U; Android 1.6; ja-jp; SonyEricssonSO-01B Build/R1EA018) AppleWebKit/528.5+ (KHTML, like Gecko) Version/3.1.2 Mobile Safari/525.20.1';
+		$test_value = $this->Lib3gkCarrier->get_carrier($user_agent);
+		$this->assertEqual($test_value, KTAI_CARRIER_ANDROID);
+		
 	}
 	
 	function testIsImode(){
@@ -147,8 +155,14 @@ class TestLib3gkCarrier extends CakeTestCase {
 		$this->assertTrue($test_value);
 	}
 	
+	function testIsAndroid(){
+		$this->Lib3gkCarrier->_carrier = KTAI_CARRIER_ANDROID;
+		$test_value = $this->Lib3gkCarrier->is_android();
+		$this->assertTrue($test_value);
+	}
+	
 	function testIsKtai(){
-		$this->Lib3gkCarrier->__carrier->_carrier = KTAI_CARRIER_DOCOMO;
+		$this->Lib3gkCarrier->_carrier = KTAI_CARRIER_DOCOMO;
 		$test_value = $this->Lib3gkCarrier->is_ktai();
 		$this->assertTrue($test_value);
 		
@@ -174,6 +188,14 @@ class TestLib3gkCarrier extends CakeTestCase {
 		$test_value = $this->Lib3gkCarrier->is_ktai();
 		$this->assertFalse($test_value);
 		$this->Lib3gkCarrier->_params['iphone_user_agent_belongs_to_ktai'] = true;
+		$test_value = $this->Lib3gkCarrier->is_ktai();
+		$this->assertTrue($test_value);
+		
+		$this->Lib3gkCarrier->_carrier = KTAI_CARRIER_ANDROID;
+		$this->Lib3gkCarrier->_params['android_user_agent_belongs_to_ktai'] = false;
+		$test_value = $this->Lib3gkCarrier->is_ktai();
+		$this->assertFalse($test_value);
+		$this->Lib3gkCarrier->_params['android_user_agent_belongs_to_ktai'] = true;
 		$test_value = $this->Lib3gkCarrier->is_ktai();
 		$this->assertTrue($test_value);
 	}

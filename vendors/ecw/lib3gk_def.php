@@ -31,6 +31,7 @@ define('KTAI_CARRIER_EMOBILE',  4);
 define('KTAI_CARRIER_IPHONE',   5);
 define('KTAI_CARRIER_PHS',      6);
 define('KTAI_CARRIER_CLAWLER',  7);
+define('KTAI_CARRIER_ANDROID',  8);
 
 define('KTAI_ENCODING_SJIS', 'SJIS');
 define('KTAI_ENCODING_SJISWIN', 'SJIS-win');

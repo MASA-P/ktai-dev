@@ -3619,6 +3619,15 @@ class Lib3gkMachine {
 			), 
 		), 
 		
+		'Android' => array(
+			'default' => array(
+				'text_size'   => array(30, 18), 
+				'screen_size' => array(240, 320), 
+				'image_size'  => array(480, 854), 
+				'pic_format'  => array('gif' => true, 'jpg' => true, 'png' => true, ), 
+			), 
+		), 
+		
 		//WILLCOM(/DDIPOCKET)
 		//
 		'WILLCOM' => array(
@@ -3800,6 +3809,7 @@ class Lib3gkMachine {
 		'iPhone'    => 5, 
 		'WILLCOM'   => 6, 
 		'DDIPOCKET' => 6, 
+		'Android'   => 8, 
 	);
 	
 	
