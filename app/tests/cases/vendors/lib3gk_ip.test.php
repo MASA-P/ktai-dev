@@ -69,7 +69,7 @@ class TestLib3gkIp extends CakeTestCase {
 		$test_value = $this->Lib3gkIp->ip2carrier('210.230.128.225');
 		$this->assertEqual($test_value, 2);
 		
-		$test_value = $this->Lib3gkIp->ip2carrier('123.108.236.1');
+		$test_value = $this->Lib3gkIp->ip2carrier('123.108.237.1');
 		$this->assertEqual($test_value, 3);
 		
 		$test_value = $this->Lib3gkIp->ip2carrier('117.55.1.225');
