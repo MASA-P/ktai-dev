@@ -92,6 +92,32 @@ class Lib3gkHtml {
 	var $_url_callback = null;
 	
 	
+	/**
+	 * 指定したフォントタグのスタック
+	 *
+	 * @var array
+	 * @access private
+	 */
+	var $__fontTags = array();
+	
+	/**
+	 * docomoの場合のフォントサイズテーブル
+	 *
+	 * @var array
+	 * @access private
+	 */
+	var $__fontSizeTable = array(
+		KTAI_CARRIER_DOCOMO => array(
+			'default' => 'smaller', 
+		), 
+		KTAI_CARRIER_KDDI => array(
+			'default' => '1', 
+		), 
+		KTAI_CARRIER_SOFTBANK => array(
+			'default' => '15px', 
+		), 
+	);
+	
 	//================================================================
 	//Methods
 	//================================================================
@@ -508,5 +534,80 @@ class Lib3gkHtml {
 		$url .= '&key='.$api_key;
 		
 		return $this->image($url, array('width' => $width, 'height' => $height), false);
+	}
+	
+	/**
+	 * 同サイズフォント指定
+	 * 機種判別してフォントサイズの差異をなくします
+	 * 
+	 * ※XHTMLの場合のみ有効です
+	 * 　フォントサイズは、現在は「'default'」のみ有効です
+	 * 　端末設定したフォントサイズに影響しない設定は現在できません
+	 *
+	 * @param $size string フォントの大きさ
+	 * @access public
+	 *
+	 */
+	function font($size = 'default'){
+		
+		if(!$this->_params['use_xml'] || $size != 'default'){
+			return null;
+		}
+		
+		$this->__load_machine();
+		$machine = $this->__machine->get_machineinfo();
+		
+		$tag = null;
+		switch($machine['carrier']){
+		
+		//docomo
+		//
+		case KTAI_CARRIER_DOCOMO:
+			$tag = '<span style="font-size: '.$this->__fontSizeTable[KTAI_CARRIER_DOCOMO][$size].';">';
+			$this->__fontTags[] = 'span';
+			break;
+			
+		//AU
+		//
+		case KTAI_CARRIER_KDDI:
+			if(isset($machine['font_size'][$size])){
+				$tag = '<font style="font-size: '.$machine['font_size'][$size].';">';
+			}else{
+				$tag = '<font size="'.$this->__fontSizeTable[KTAI_CARRIER_KDDI][$size].'">';
+			}
+			$this->__fontTags[] = 'font';
+			break;
+			
+		//SoftBank
+		//
+		case KTAI_CARRIER_SOFTBANK:
+			if(isset($machine['font_size'][$size])){
+				$font_size = $machine['font_size'][$size];
+			}else{
+				$font_size = $this->__fontSizeTable[KTAI_CARRIER_SOFTBANK][$size];
+			}
+			$tag = '<font style="font-size: '.$font_size.';">';
+			$this->__fontTags[] = 'font';
+			break;
+		}
+		
+		return $tag;
+	}
+	
+	/**
+	 * フォントタグの終端
+	 *
+	 * @access public
+	 *
+	 */
+	function fontend(){
+		
+		$tag = null;
+		
+		if(!empty($this->__fontTags)){
+			$tag = '</'.array_pop($this->__fontTags).'>';
+		}
+		
+		return $tag;
 	}
 }

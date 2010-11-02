@@ -1675,6 +1675,7 @@ class Lib3gkMachine {
 				'screen_size' => array(232, 264), 
 				'image_size' => array(240, 320), 
 				'pic_format'  => array('gif' => true, 'jpg' => true, 'png' => true, ), 
+				'font_size' => array('default' => '13px'), 
 			), 
 			'831N' => array(
 				'text_size' => array(24, 16), 
@@ -1693,6 +1694,7 @@ class Lib3gkMachine {
 				'screen_size' => array(480, 754), 
 				'image_size' => array(480, 854), 
 				'pic_format'  => array('gif' => true, 'jpg' => true, 'png' => true, ), 
+				'font_size' => array('default' => '30px'), 
 			), 
 			'832SH' => array(
 				'text_size' => array(24, 17), 
@@ -2612,6 +2614,7 @@ class Lib3gkMachine {
 				'screen_size' => array(234, 358), 
 				'image_size' => array(480, 854), 
 				'pic_format'  => array('gif' => true, 'jpg' => true, 'png' => true, ), 
+				'font_size' => array('default' => '12px'), 
 			), 
 			'CA3G' => array(
 				'text_size' => array(23, 15), 
@@ -2630,6 +2633,7 @@ class Lib3gkMachine {
 				'screen_size' => array(233, 358), 
 				'image_size' => array(480, 854), 
 				'pic_format'  => array('gif' => true, 'jpg' => true, 'png' => true, ), 
+				'font_size' => array('default' => '15px'), 
 			), 
 			'CA3F' => array(
 				'text_size' => array(23, 16), 
@@ -2655,6 +2659,7 @@ class Lib3gkMachine {
 				'screen_size' => array(232, 336), 
 				'image_size' => array(480, 854), 
 				'pic_format'  => array('gif' => true, 'jpg' => true, 'png' => true, ), 
+				'font_size' => array('default' => '15px'), 
 			), 
 			'KC3Q' => array(
 				'text_size' => array(23, 15), 
@@ -2667,6 +2672,7 @@ class Lib3gkMachine {
 				'screen_size' => array(233, 358), 
 				'image_size' => array(480, 854), 
 				'pic_format'  => array('gif' => true, 'jpg' => true, 'png' => true, ), 
+				'font_size' => array('default' => '15px'), 
 			), 
 			'TS3P' => array(
 				'text_size' => array(23, 16), 
@@ -2679,12 +2685,14 @@ class Lib3gkMachine {
 				'screen_size' => array(234, 358), 
 				'image_size' => array(480, 854), 
 				'pic_format'  => array('gif' => true, 'jpg' => true, 'png' => true, ), 
+				'font_size' => array('default' => '15px'), 
 			), 
 			'KC3O' => array(
 				'text_size' => array(23, 15), 
 				'screen_size' => array(232, 325), 
 				'image_size' => array(240, 400), 
 				'pic_format'  => array('gif' => true, 'jpg' => true, 'png' => true, ), 
+				'font_size' => array('default' => '15px'), 
 			), 
 			'SH3C' => array(
 				'text_size' => array(23, 16), 
@@ -2697,6 +2705,7 @@ class Lib3gkMachine {
 				'screen_size' => array(232, 333), 
 				'image_size' => array(240, 400), 
 				'pic_format'  => array('gif' => true, 'jpg' => true, 'png' => true, ), 
+				'font_size' => array('default' => '15px'), 
 			), 
 			'SN3K' => array(
 				'text_size' => array(23, 16), 
@@ -2752,6 +2761,7 @@ class Lib3gkMachine {
 				'screen_size' => array(233, 358), 
 				'image_size' => array(480, 854), 
 				'pic_format'  => array('gif' => true, 'jpg' => true, 'png' => true, ), 
+				'font_size' => array('default' => '15px'), 
 			), 
 			'KC3N' => array(
 				'text_size' => array(23, 15), 
@@ -2824,6 +2834,7 @@ class Lib3gkMachine {
 				'screen_size' => array(232, 325), 
 				'image_size' => array(240, 400), 
 				'pic_format'  => array('gif' => true, 'jpg' => true, 'png' => true, ), 
+				'font_size' => array('default' => '15px'), 
 			), 
 			'SH36' => array(
 				'text_size' => array(22, 15), 
@@ -2872,12 +2883,14 @@ class Lib3gkMachine {
 				'screen_size' => array(232, 325), 
 				'image_size' => array(240, 400), 
 				'pic_format'  => array('gif' => true, 'jpg' => true, 'png' => true, ), 
+				'font_size' => array('default' => '15px'), 
 			), 
 			'TS3K' => array(
 				'text_size' => array(23, 11), 
 				'screen_size' => array(229, 236), 
 				'image_size' => array(240, 320), 
 				'pic_format'  => array('gif' => true, 'jpg' => true, 'png' => true, ), 
+				'font_size' => array('default' => '15px'), 
 			), 
 			'TS3J' => array(
 				'text_size' => array(23, 15), 
@@ -2980,6 +2993,7 @@ class Lib3gkMachine {
 				'screen_size' => array(233, 331), 
 				'image_size' => array(240, 400), 
 				'pic_format'  => array('gif' => true, 'jpg' => true, 'png' => true, ), 
+				'font_size' => array('default' => '15px'), 
 			), 
 			'TS3G' => array(
 				'text_size' => array(22, 12), 
@@ -3160,6 +3174,7 @@ class Lib3gkMachine {
 				'screen_size' => array(232, 237), 
 				'image_size' => array(240, 320), 
 				'pic_format'  => array('gif' => true, 'jpg' => true, 'png' => true, ), 
+				'font_size' => array('default' => '15px'), 
 			), 
 			'SA38' => array(
 				'text_size' => array(23, 12), 
@@ -3196,6 +3211,7 @@ class Lib3gkMachine {
 				'screen_size' => array(232, 237), 
 				'image_size' => array(240, 320), 
 				'pic_format'  => array('gif' => true, 'jpg' => true, 'png' => true, ), 
+				'font_size' => array('default' => '15px'), 
 			), 
 			'ST31' => array(
 				'text_size' => array(19, 10), 
@@ -3250,12 +3266,14 @@ class Lib3gkMachine {
 				'screen_size' => array(232, 245), 
 				'image_size' => array(240, 320), 
 				'pic_format'  => array('gif' => true, 'jpg' => true, 'png' => true, ), 
+				'font_size' => array('default' => '15px'), 
 			), 
 			'KC35' => array(
 				'text_size' => array(23, 12), 
 				'screen_size' => array(232, 245), 
 				'image_size' => array(240, 320), 
 				'pic_format'  => array('gif' => true, 'jpg' => true, 'png' => true, ), 
+				'font_size' => array('default' => '15px'), 
 			), 
 			'SA36' => array(
 				'text_size' => array(23, 12), 
@@ -3274,12 +3292,14 @@ class Lib3gkMachine {
 				'screen_size' => array(230, 323), 
 				'image_size' => array(240, 400), 
 				'pic_format'  => array('gif' => true, 'jpg' => true, 'png' => true, ), 
+				'font_size' => array('default' => '12px'), 
 			), 
 			'CA33' => array(
 				'text_size' => array(23, 15), 
 				'screen_size' => array(230, 323), 
 				'image_size' => array(240, 400), 
 				'pic_format'  => array('gif' => true, 'jpg' => true, 'png' => true, ), 
+				'font_size' => array('default' => '12px'), 
 			), 
 			'SN34' => array(
 				'text_size' => array(22, 12), 
@@ -3292,6 +3312,7 @@ class Lib3gkMachine {
 				'screen_size' => array(230, 266), 
 				'image_size' => array(240, 320), 
 				'pic_format'  => array('gif' => true, 'jpg' => true, 'png' => true, ), 
+				'font_size' => array('default' => '12px'), 
 			), 
 			'SA35' => array(
 				'text_size' => array(23, 12), 
@@ -3322,6 +3343,7 @@ class Lib3gkMachine {
 				'screen_size' => array(230, 235), 
 				'image_size' => array(240, 320), 
 				'pic_format'  => array('gif' => true, 'jpg' => true, 'png' => true, ), 
+				'font_size' => array('default' => '12px'), 
 			), 
 			'SN33' => array(
 				'text_size' => array(22, 12), 
@@ -3340,6 +3362,7 @@ class Lib3gkMachine {
 				'screen_size' => array(230, 323), 
 				'image_size' => array(240, 400), 
 				'pic_format'  => array('gif' => true, 'jpg' => true, 'png' => true, ), 
+				'font_size' => array('default' => '12px'), 
 			), 
 			'TS32' => array(
 				'text_size' => array(22, 12), 
@@ -3376,24 +3399,28 @@ class Lib3gkMachine {
 				'screen_size' => array(230, 266), 
 				'image_size' => array(240, 320), 
 				'pic_format'  => array('gif' => true, 'jpg' => true, 'png' => true, ), 
+				'font_size' => array('default' => '12px'), 
 			), 
 			'CA31' => array(
 				'text_size' => array(23, 15), 
 				'screen_size' => array(230, 346), 
 				'image_size' => array(240, 400), 
 				'pic_format'  => array('gif' => true, 'jpg' => true, 'png' => true, ), 
+				'font_size' => array('default' => '12px'), 
 			), 
 			'TS31' => array(
 				'text_size' => array(20, 9), 
 				'screen_size' => array(229, 270), 
 				'image_size' => array(240, 320), 
 				'pic_format'  => array('gif' => true, 'jpg' => true, 'png' => true, ), 
+				'font_size' => array('default' => '12px'), 
 			), 
 			'SA31' => array(
 				'text_size' => array(22, 12), 
 				'screen_size' => array(225, 266), 
 				'image_size' => array(240, 320), 
 				'pic_format'  => array('gif' => true, 'jpg' => true, 'png' => true, ), 
+				'font_size' => array('default' => '12px'), 
 			), 
 			'SN31' => array(
 				'text_size' => array(22, 13), 
@@ -4166,12 +4193,10 @@ class Lib3gkMachine {
 			$machine_name = 'default';
 			$default = true;
 		}
-		$arr = $this->machine_table[$carrier_name][$machine_name];
+		$carrier = $this->carrier_name_table[$carrier_name];
 		
-		$arr['carrier'] = $this->carrier_name_table[$carrier_name];
-		$arr['carrier_name'] = $carrier_name;
-		$arr['machine_name'] = $machine_name;
-		$arr['default'] = $default;
+		$arr = $this->machine_table[$carrier_name][$machine_name];
+		$arr = array_merge($arr, compact('carrier', 'carrier_name', 'machine_name', 'default'));
 		
 		return $arr;
 	}
