@@ -51,6 +51,16 @@ class TestLib3gkEmoji extends CakeTestCase {
 		//PC & iPhone  emoji process test
 		//
 		$carrier->_carrier = KTAI_CARRIER_UNKNOWN;
+		$this->Lib3gkEmoji->_params['input_encoding']  = KTAI_ENCODING_UTF8;
+		$this->Lib3gkEmoji->_params['output_encoding'] = KTAI_ENCODING_UTF8;
+		$str = $this->Lib3gkEmoji->emoji(0xe63e, false);
+		$this->assertEqual($str, '[晴]');
+		$carrier->_carrier = KTAI_CARRIER_IPHONE;
+		$str = $this->Lib3gkEmoji->emoji(0xe63e, false);
+		$this->assertEqual($str, '[晴]');
+		
+		$this->Lib3gkEmoji->_params['input_encoding']  = KTAI_ENCODING_SJISWIN;
+		$this->Lib3gkEmoji->_params['output_encoding'] = KTAI_ENCODING_SJISWIN;
 		$str = $this->Lib3gkEmoji->emoji(0xf89f, false);
 		$this->assertEqual($str, mb_convert_encoding('[晴]', 'SJIS', 'UTF-8'));
 		$carrier->_carrier = KTAI_CARRIER_IPHONE;
