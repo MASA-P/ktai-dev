@@ -596,4 +596,26 @@ class KtaiHelper extends Helper {
 		return $this->_lib3gk->style($name, $display);
 	}
 	
+	/**
+	 * 機種に最適のフォント指定を行う
+	 * 詳しくはLib3gkHtml::font()を参照
+	 *
+	 * @return string フォント指定タグ
+	 * @access public
+	 */
+	function font($size = 'default'){
+		return $this->_lib3gk->font($size);
+	}
+	
+	/**
+	 * font()で生成したタグの閉じタグを生成
+	 * 詳しくはLib3gkHtml::fontend()を参照
+	 *
+	 * @return string フォント指定タグの閉じタグ
+	 * @access public
+	 */
+	function fontend(){
+		return $this->_lib3gk->fontend();
+	}
+	
 }

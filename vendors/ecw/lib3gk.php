@@ -745,6 +745,30 @@ class Lib3gk {
 	
 	
 	/**
+	 * 機種に最適のフォント指定を行う
+	 * 詳しくはLib3gkHtml::font()を参照
+	 *
+	 * @return string フォント指定タグ
+	 * @access public
+	 */
+	function font($size = 'default'){
+		$this->__load_html();
+		return $this->__html->font($size);
+	}
+	
+	/**
+	 * font()で生成したタグの閉じタグを生成
+	 * 詳しくはLib3gkHtml::fontend()を参照
+	 *
+	 * @return string フォント指定タグの閉じタグ
+	 * @access public
+	 */
+	function fontend(){
+		$this->__load_html();
+		return $this->__html->fontend();
+	}
+	
+	/**
 	 * QRコードの生成(Google chart APIの利用)
 	 * 詳しくはLib3gkHtml::get_qrcode()を参照
 	 *
