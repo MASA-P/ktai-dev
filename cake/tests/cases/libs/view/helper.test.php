@@ -219,7 +219,7 @@ class HelperTest extends CakeTestCase {
  * @access public
  * @return void
  */
-	function testFormFieldNameParsing() {
+	function testSetEntity() {
 		// PHP4 reference hack
 		ClassRegistry::removeObject('view');
 		ClassRegistry::addObject('view', $this->View);
@@ -348,6 +348,17 @@ class HelperTest extends CakeTestCase {
 		$this->assertEqual($this->View->modelId, null);
 		$this->assertEqual($this->View->association, null);
 		$this->assertEqual($this->View->fieldSuffix, null);
+	}
+
+/**
+ * test that 'view' doesn't break things.
+ *
+ * @return void
+ */
+	function testSetEntityWithView() {
+		$this->assertNull($this->Helper->setEntity('Allow.view.group_id'));
+		$this->assertNull($this->Helper->setEntity('Allow.view'));
+		$this->assertNull($this->Helper->setEntity('View.view'));
 	}
 
 /**
@@ -575,6 +586,13 @@ class HelperTest extends CakeTestCase {
 		$this->assertEqual($this->View->association, null);
 		$this->assertEqual($this->View->fieldSuffix, null);
 
+		$this->Helper->setEntity('HelperTestTag');
+		$this->assertEqual($this->View->model, 'HelperTestTag');
+		$this->assertEqual($this->View->field, 'HelperTestTag');
+		$this->assertEqual($this->View->modelId, null);
+		$this->assertEqual($this->View->association, null);
+		$this->assertEqual($this->View->fieldSuffix, null);
+		$this->assertEqual($this->View->entityPath, 'HelperTestTag');
 	}
 
 /**

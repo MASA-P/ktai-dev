@@ -20,7 +20,9 @@
  */
 
 /**
- * Memcache storage engine for cache
+ * Memcache storage engine for cache.  Memcache has some limitations in the amount of 
+ * control you have over expire times far in the future.  See MemcacheEngine::write() for
+ * more information.
  *
  * @package       cake
  * @subpackage    cake.cake.libs.cache
@@ -79,12 +81,7 @@ class MemcacheEngine extends CacheEngine {
 			$return = false;
 			$this->__Memcache =& new Memcache();
 			foreach ($this->settings['servers'] as $server) {
-				$parts = explode(':', $server);
-				$host = $parts[0];
-				$port = 11211;
-				if (isset($parts[1])) {
-					$port = $parts[1];
-				}
+				list($host, $port) = $this->_parseServerString($server);
 				if ($this->__Memcache->addServer($host, $port)) {
 					$return = true;
 				}
@@ -95,18 +92,45 @@ class MemcacheEngine extends CacheEngine {
 	}
 
 /**
- * Write data for key into cache
+ * Parses the server address into the host/port.  Handles both IPv6 and IPv4
+ * addresses
+ *
+ * @param string $server The server address string.
+ * @return array Array containing host, port
+ */
+	function _parseServerString($server) {
+		if (substr($server, 0, 1) == '[') {
+			$position = strpos($server, ']:');
+			if ($position !== false) {
+				$position++;
+			}
+		} else {
+		    $position = strpos($server, ':');
+		}
+		$port = 11211;
+		$host = $server;
+		if ($position !== false) {
+			$host = substr($server, 0, $position);
+			$port = substr($server, $position + 1);
+		}
+		return array($host, $port);
+	}
+
+/**
+ * Write data for key into cache.  When using memcache as your cache engine
+ * remember that the Memcache pecl extension does not support cache expiry times greater 
+ * than 30 days in the future. If you wish to create cache entries that do not expire, set the duration
+ * to `0` in your cache configuration.
  *
  * @param string $key Identifier for the data
  * @param mixed $value Data to be cached
  * @param integer $duration How long to cache the data, in seconds
  * @return boolean True if the data was succesfully cached, false on failure
+ * @see http://php.net/manual/en/memcache.set.php
  * @access public
  */
 	function write($key, &$value, $duration) {
-		$expires = time() + $duration;
-		$this->__Memcache->set($key . '_expires', $expires, $this->settings['compress'], $expires);
-		return $this->__Memcache->set($key, $value, $this->settings['compress'], $expires);
+		return $this->__Memcache->set($key, $value, $this->settings['compress'], $duration);
 	}
 
 /**
@@ -117,11 +141,6 @@ class MemcacheEngine extends CacheEngine {
  * @access public
  */
 	function read($key) {
-		$time = time();
-		$cachetime = intval($this->__Memcache->get($key . '_expires'));
-		if ($cachetime < $time || ($time + $this->settings['duration']) < $cachetime) {
-			return false;
-		}
 		return $this->__Memcache->get($key);
 	}
 
