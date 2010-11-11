@@ -129,6 +129,9 @@ class TestLib3gkHtml extends CakeTestCase {
 		$user_agent = 'DoCoMo/2.0 P906i(c100;TB;W24H15)';
 		$carrier->get_carrier($user_agent, true);
 		$this->Lib3gkHtml->_params['use_xml'] = false;
+		$this->Lib3gkHtml->_params['style'] = array(
+			'teststyle' => 'color: red;', 
+		);
 		$result = $this->Lib3gkHtml->font();
 		$this->assertEqual(null, $result);
 		
@@ -136,10 +139,16 @@ class TestLib3gkHtml extends CakeTestCase {
 		$result = $this->Lib3gkHtml->font();
 		$this->assertEqual('<span style="font-size: smaller;">', $result);
 		
+		$result = $this->Lib3gkHtml->font('default', 'teststyle');
+		$this->assertEqual('<span style="font-size: smaller;color: red;">', $result);
+		
 		$user_agent = 'KDDI-KC3Z UP.Browser/6.2.0.7.3.129 (GUI) MMP/2.0';
 		$carrier->get_carrier($user_agent, true);
 		$result = $this->Lib3gkHtml->font();
 		$this->assertEqual('<font size="1">', $result);
+		
+		$result = $this->Lib3gkHtml->font('default', 'teststyle');
+		$this->assertEqual('<font size="1" style="color: red;">', $result);
 		
 		$user_agent = 'SoftBank/1.0/840SH/SHJ001/0123456789 Browser/NetFront/3.5 Profile/MIDP-2.0 Configuration/CLDC-1.1';
 		$carrier->get_carrier($user_agent, true);
@@ -156,6 +165,15 @@ class TestLib3gkHtml extends CakeTestCase {
 		$result = $this->Lib3gkHtml->font();
 		$this->assertEqual('<font style="font-size: 30px;">', $result);
 		
+		$result = $this->Lib3gkHtml->font('default', 'teststyle');
+		$this->assertEqual('<font style="font-size: 30px;color: red;">', $result);
+		
+		$result = $this->Lib3gkHtml->fontend();
+		$this->assertEqual('</font>', $result);
+		
+		$result = $this->Lib3gkHtml->fontend();
+		$this->assertEqual('</font>', $result);
+		
 		$result = $this->Lib3gkHtml->fontend();
 		$this->assertEqual('</font>', $result);
 		
@@ -167,6 +185,9 @@ class TestLib3gkHtml extends CakeTestCase {
 		
 		$result = $this->Lib3gkHtml->fontend();
 		$this->assertEqual('</font>', $result);
+		
+		$result = $this->Lib3gkHtml->fontend();
+		$this->assertEqual('</span>', $result);
 		
 		$result = $this->Lib3gkHtml->fontend();
 		$this->assertEqual('</span>', $result);

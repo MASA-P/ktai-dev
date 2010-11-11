@@ -34,6 +34,7 @@ class KtaipagesController extends KtaiAppController {
 		'use_img_emoji' => true, 
 		'input_encoding' => 'UTF8', 
 		'output_encoding' => 'UTF8', 
+		'use_xml' => true, 
 	);
 	
 	//Sample index action

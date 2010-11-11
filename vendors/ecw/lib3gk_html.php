@@ -117,6 +117,20 @@ class Lib3gkHtml {
 			'default' => '15px', 
 		), 
 	);
+	var $__fontTagTable = array(
+		KTAI_CARRIER_DOCOMO => array(
+			array('<span style="font-size: %1;%2">', '</span>'), 
+			array('<span style="font-size: %1;%2">', '</span>'), 
+		), 
+		KTAI_CARRIER_KDDI => array(
+			array('<font style="font-size: %1;%2">', '</font>'), 
+			array('<font size="%1"%2>', '</font>'), 
+		), 
+		KTAI_CARRIER_SOFTBANK => array(
+			array('<font style="font-size: %1;%2">', '</font>'), 
+			array('<font style="font-size: %1;%2">', '</font>'), 
+		), 
+	);
 	
 	//================================================================
 	//Methods
@@ -545,52 +559,50 @@ class Lib3gkHtml {
 	 * 　端末設定したフォントサイズに影響しない設定は現在できません
 	 *
 	 * @param $size string フォントの大きさ
+	 * @param $style string $this->ktai['style'][]に登録されたスタイルのスタイル名
+	 * @param $display boolean trueの場合は内容の表示(echo)も行う
 	 * @access public
 	 *
 	 */
-	function font($size = 'default'){
+	function font($size = null, $style = null, $display = true){
+		
+		if($size === null){
+			$size = 'default';
+		}
 		
 		if(!$this->_params['use_xml'] || $size != 'default'){
 			return null;
+		}
+		
+		if($style !== null){
+			$style = $this->style($style, false);
 		}
 		
 		$this->__load_machine();
 		$machine = $this->__machine->get_machineinfo();
 		
 		$tag = null;
+		$carrier = $machine['carrier'];
+		$default = isset($machine['font_size'][$size]) ? 0 : 1;
+		$search = array('%1', '%2');
+		$replace = array();
 		switch($machine['carrier']){
-		
-		//docomo
-		//
-		case KTAI_CARRIER_DOCOMO:
-			$tag = '<span style="font-size: '.$this->__fontSizeTable[KTAI_CARRIER_DOCOMO][$size].';">';
-			$this->__fontTags[] = 'span';
-			break;
-			
-		//AU
-		//
 		case KTAI_CARRIER_KDDI:
-			if(isset($machine['font_size'][$size])){
-				$tag = '<font style="font-size: '.$machine['font_size'][$size].';">';
-			}else{
-				$tag = '<font size="'.$this->__fontSizeTable[KTAI_CARRIER_KDDI][$size].'">';
+			if($default && $style !== null){
+				$style = ' style="'.$style.'"';
 			}
-			$this->__fontTags[] = 'font';
-			break;
-			
-		//SoftBank
-		//
+		case KTAI_CARRIER_DOCOMO:
 		case KTAI_CARRIER_SOFTBANK:
-			if(isset($machine['font_size'][$size])){
-				$font_size = $machine['font_size'][$size];
-			}else{
-				$font_size = $this->__fontSizeTable[KTAI_CARRIER_SOFTBANK][$size];
-			}
-			$tag = '<font style="font-size: '.$font_size.';">';
-			$this->__fontTags[] = 'font';
+			$replace[0] = $default ? $this->__fontSizeTable[$carrier][$size] : $machine['font_size'][$size];
+			$replace[1] = $style;
+			$tag = str_replace($search, $replace, $this->__fontTagTable[$carrier][$default][0]);
+			$this->__fontTags[] = $this->__fontTagTable[$carrier][$default][1];
 			break;
 		}
 		
+		if($display){
+			echo $tag;
+		}
 		return $tag;
 	}
 	
@@ -600,14 +612,17 @@ class Lib3gkHtml {
 	 * @access public
 	 *
 	 */
-	function fontend(){
+	function fontend($display = true){
 		
 		$tag = null;
 		
 		if(!empty($this->__fontTags)){
-			$tag = '</'.array_pop($this->__fontTags).'>';
+			$tag = array_pop($this->__fontTags);
 		}
 		
+		if($display){
+			echo $tag;
+		}
 		return $tag;
 	}
 }
