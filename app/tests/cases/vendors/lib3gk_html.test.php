@@ -148,13 +148,13 @@ class TestLib3gkHtml extends CakeTestCase {
 		$user_agent = 'KDDI-KC3Z UP.Browser/6.2.0.7.3.129 (GUI) MMP/2.0';
 		$carrier->get_carrier($user_agent, true);
 		$result = $this->Lib3gkHtml->font();
-		$this->assertEqual('<font style="font-size: medium;">', $result);
+		$this->assertEqual('<font style="font-size: 22px;">', $result);
 		
 		$result = $this->Lib3gkHtml->font(null, 'div');
-		$this->assertEqual('<div style="font-size: medium;">', $result);
+		$this->assertEqual('<div style="font-size: 22px;">', $result);
 		
 		$result = $this->Lib3gkHtml->font(null, null, 'teststyle');
-		$this->assertEqual('<font style="font-size: medium;color: red;">', $result);
+		$this->assertEqual('<font style="font-size: 22px;color: red;">', $result);
 		
 		$user_agent = 'SoftBank/1.0/840SH/SHJ001/0123456789 Browser/NetFront/3.5 Profile/MIDP-2.0 Configuration/CLDC-1.1';
 		$carrier->get_carrier($user_agent, true);

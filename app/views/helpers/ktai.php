@@ -615,11 +615,12 @@ class KtaiHelper extends Helper {
 	 * font()で生成したタグの閉じタグを生成
 	 * 詳しくはLib3gkHtml::fontend()を参照
 	 *
+	 * @param $display boolean trueでechoを自動で行う
 	 * @return string フォント指定タグの閉じタグ
 	 * @access public
 	 */
-	function fontend(){
-		return $this->_lib3gk->fontend();
+	function fontend($display = true){
+		return $this->_lib3gk->fontend($display);
 	}
 	
 }

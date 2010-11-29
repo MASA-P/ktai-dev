@@ -748,24 +748,29 @@ class Lib3gk {
 	 * 機種に最適のフォント指定を行う
 	 * 詳しくはLib3gkHtml::font()を参照
 	 *
+	 * @param $size string フォントのサイズ(small/medium/large)
+	 * @param $tag string カスタムで使用するタグ(div, span, fontなど)
+	 * @param $style string 付加するスタイル名。$ktai->style()で指定する値
+	 * @param $display boolean trueでechoを自動で行う
 	 * @return string フォント指定タグ
 	 * @access public
 	 */
-	function font($size = 'default'){
+	function font($size = null, $tag = null, $style = null, $display = true){
 		$this->__load_html();
-		return $this->__html->font($size);
+		return $this->__html->font($size, $tag, $style, $display);
 	}
 	
 	/**
 	 * font()で生成したタグの閉じタグを生成
 	 * 詳しくはLib3gkHtml::fontend()を参照
 	 *
+	 * @param $display boolean trueでechoを自動で行う
 	 * @return string フォント指定タグの閉じタグ
 	 * @access public
 	 */
-	function fontend(){
+	function fontend($display = true){
 		$this->__load_html();
-		return $this->__html->fontend();
+		return $this->__html->fontend($display);
 	}
 	
 	/**

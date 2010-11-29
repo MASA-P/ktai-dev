@@ -639,7 +639,10 @@ class Lib3gkHtml {
 	
 	/**
 	 * フォントタグの終端
+	 * 直近に処理されたfont()に対応する閉じタグを出力します
 	 *
+	 * @param $display boolean trueでechoを自動で行う
+	 * @return string フォント指定タグの閉じタグ
 	 * @access public
 	 *
 	 */
