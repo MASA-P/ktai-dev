@@ -81,6 +81,10 @@ class Lib3gkHtml {
 		//Inline stylesheet params
 		//
 		'style' => array(), 
+		
+		//デフォルトのフォントサイズ
+		//
+		'default_font_size' => 'medium', 
 	);
 	
 	/**
@@ -101,35 +105,40 @@ class Lib3gkHtml {
 	var $__fontTags = array();
 	
 	/**
-	 * docomoの場合のフォントサイズテーブル
+	 * 各キャリアの対応フォントサイズテーブル
 	 *
 	 * @var array
 	 * @access private
 	 */
 	var $__fontSizeTable = array(
-		KTAI_CARRIER_DOCOMO => array(
-			'default' => 'smaller', 
+		'low' => array(
+			KTAI_CARRIER_KDDI => array('small' => '15px', 'medium' => '22px', 'large' => '32px'), 
 		), 
-		KTAI_CARRIER_KDDI => array(
-			'default' => '1', 
-		), 
-		KTAI_CARRIER_SOFTBANK => array(
-			'default' => '15px', 
+		'high' => array(
+			KTAI_CARRIER_DOCOMO => array('small' => 'medium', 'medium' => 'large', 'large' => 'x-large'), 
+			KTAI_CARRIER_SOFTBANK => array('small' => 'medium', 'medium' => 'large', 'large' => 'x-large'), 
 		), 
 	);
+	
+	/**
+	 * タグのテンプレート
+	 *
+	 * @var array
+	 * @access private
+	 */
+	var $__fontTagBase = array('<%tag% style="font-size: %size%;%style%">', '</%tag%>');
+	
+	/**
+	 * 各キャリアで使用するタグ
+	 *
+	 * @var array
+	 * @access private
+	 */
 	var $__fontTagTable = array(
-		KTAI_CARRIER_DOCOMO => array(
-			array('<span style="font-size: %1;%2">', '</span>'), 
-			array('<span style="font-size: %1;%2">', '</span>'), 
-		), 
-		KTAI_CARRIER_KDDI => array(
-			array('<font style="font-size: %1;%2">', '</font>'), 
-			array('<font size="%1"%2>', '</font>'), 
-		), 
-		KTAI_CARRIER_SOFTBANK => array(
-			array('<font style="font-size: %1;%2">', '</font>'), 
-			array('<font style="font-size: %1;%2">', '</font>'), 
-		), 
+		KTAI_CARRIER_UNKNOWN => 'div', 
+		KTAI_CARRIER_DOCOMO => 'div', 
+		KTAI_CARRIER_KDDI => 'font', 
+		KTAI_CARRIER_SOFTBANK => 'font', 
 	);
 	
 	//================================================================
@@ -555,23 +564,29 @@ class Lib3gkHtml {
 	 * 機種判別してフォントサイズの差異をなくします
 	 * 
 	 * ※XHTMLの場合のみ有効です
-	 * 　フォントサイズは、現在は「'default'」のみ有効です
-	 * 　端末設定したフォントサイズに影響しない設定は現在できません
+	 * 　フォントサイズは「small」「medium」「large」が指定可能。それ以外の値はそのまま出力します
+	 * 　デフォルトは$__params['default_font_size']の値です。無指定の場合は「medium」です。
 	 *
-	 * @param $size string フォントの大きさ
-	 * @param $style string $this->ktai['style'][]に登録されたスタイルのスタイル名
-	 * @param $display boolean trueの場合は内容の表示(echo)も行う
+	 * @param $size string フォントのサイズ(small/medium/large)
+	 * @param $tag string カスタムで使用するタグ(div, span, fontなど)
+	 * @param $style string 付加するスタイル名。$ktai->style()で指定する値
+	 * @param $display boolean trueでechoを自動で行う
+	 * @return string フォント指定タグ
 	 * @access public
 	 *
 	 */
-	function font($size = null, $style = null, $display = true){
+	function font($size = null, $tag = null, $style = null, $display = true){
 		
-		if($size === null){
-			$size = 'default';
+		if(!$this->_params['use_xml']){
+			return null;
 		}
 		
-		if(!$this->_params['use_xml'] || $size != 'default'){
-			return null;
+		if($size === null){
+			if(isset($this->_params['default_font_size'])){
+				$size = $this->_params['default_font_size'];
+			}else{
+				$size = 'medium';
+			}
 		}
 		
 		if($style !== null){
@@ -580,30 +595,46 @@ class Lib3gkHtml {
 		
 		$this->__load_machine();
 		$machine = $this->__machine->get_machineinfo();
-		
-		$tag = null;
 		$carrier = $machine['carrier'];
-		$default = isset($machine['font_size'][$size]) ? 0 : 1;
-		$search = array('%1', '%2');
-		$replace = array();
-		switch($machine['carrier']){
-		case KTAI_CARRIER_KDDI:
-			if($default && $style !== null){
-				$style = ' style="'.$style.'"';
+		
+		if($tag === null){
+			if($carrier == KTAI_CARRIER_DOCOMO || $carrier == KTAI_CARRIER_KDDI || $carrier == KTAI_CARRIER_SOFTBANK){
+				$tag = $this->__fontTagTable[$carrier];
+			}else{
+				$tag = $this->__fontTagTable[KTAI_CARRIER_UNKNOWN];
 			}
-		case KTAI_CARRIER_DOCOMO:
-		case KTAI_CARRIER_SOFTBANK:
-			$replace[0] = $default ? $this->__fontSizeTable[$carrier][$size] : $machine['font_size'][$size];
-			$replace[1] = $style;
-			$tag = str_replace($search, $replace, $this->__fontTagTable[$carrier][$default][0]);
-			$this->__fontTags[] = $this->__fontTagTable[$carrier][$default][1];
-			break;
 		}
+		
+		if($carrier != KTAI_CARRIER_DOCOMO && $carrier != KTAI_CARRIER_KDDI && $carrier != KTAI_CARRIER_SOFTBANK){
+			$carrier = KTAI_CARRIER_DOCOMO;
+		}
+		
+		$reso = 'low';
+		if(isset($machine['font_size'])){
+			if(isset($machine['font_size']['reso'])){
+				$reso = $machine['font_size']['reso'];
+				if(isset($this->__fontSizeTable[$reso][$carrier][$size])){
+					$size = $this->__fontSizeTable[$reso][$carrier][$size];
+				}
+			}else
+			if(isset($machine['font_size'][$size])){
+				$size = $machine['font_size'][$size];
+			}
+		}else
+		if(isset($this->__fontSizeTable[$reso][$carrier][$size])){
+			$size = $this->__fontSizeTable[$reso][$carrier][$size];
+		}
+		
+		$search = array('%tag%', '%size%', '%style%');
+		$replace = array($tag, $size, $style);
+		
+		$result = str_replace($search, $replace, $this->__fontTagBase[0]);
+		$this->__fontTags[] = str_replace('%tag%', $tag, $this->__fontTagBase[1]);
 		
 		if($display){
-			echo $tag;
+			echo $result;
 		}
-		return $tag;
+		return $result;
 	}
 	
 	/**
@@ -614,15 +645,15 @@ class Lib3gkHtml {
 	 */
 	function fontend($display = true){
 		
-		$tag = null;
+		$result = null;
 		
 		if(!empty($this->__fontTags)){
-			$tag = array_pop($this->__fontTags);
+			$result = array_pop($this->__fontTags);
 		}
 		
 		if($display){
-			echo $tag;
+			echo $result;
 		}
-		return $tag;
+		return $result;
 	}
 }

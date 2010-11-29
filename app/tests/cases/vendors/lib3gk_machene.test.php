@@ -46,11 +46,6 @@ class TestLib3gkMachine extends CakeTestCase {
 		$arr = $this->Lib3gkMachine->get_machineinfo($carrier_name, $machine_name);
 		$this->assertTrue($arr['carrier_name'] == $carrier_name && $arr['machine_name'] == $machine_name);
 		
-		$carrier_name = 'SoftBank';
-		$machine_name = '936SH';
-		$arr = $this->Lib3gkMachine->get_machineinfo($carrier_name, $machine_name);
-		$this->assertTrue($arr['carrier_name'] == $carrier_name && $arr['machine_name'] == $machine_name);
-		$this->assertEqual($arr['font_size']['default'], '30px');
 	}
 	
 	

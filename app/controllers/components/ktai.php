@@ -120,6 +120,9 @@ class KtaiComponent extends Object {
 		if(isset($controller->ktai)){
 			Configure::write('Ktai', $this->_options);
 		}
+		if($this->_options['use_xml'] && $this->is_imode() && Configure::read('debug') == 0){
+			header('Content-type: application/xhtml+xml');
+		}
 	}
 	
 	

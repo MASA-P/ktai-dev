@@ -600,11 +600,15 @@ class KtaiHelper extends Helper {
 	 * 機種に最適のフォント指定を行う
 	 * 詳しくはLib3gkHtml::font()を参照
 	 *
+	 * @param $size string フォントのサイズ(small/medium/large)
+	 * @param $tag string カスタムで使用するタグ(div, span, fontなど)
+	 * @param $style string 付加するスタイル名。$ktai->style()で指定する値
+	 * @param $display boolean trueでechoを自動で行う
 	 * @return string フォント指定タグ
 	 * @access public
 	 */
-	function font($size = 'default'){
-		return $this->_lib3gk->font($size);
+	function font($size = null, $tag = null, $style = null, $display = true){
+		return $this->_lib3gk->font($size, $tag, $style, $display);
 	}
 	
 	/**
