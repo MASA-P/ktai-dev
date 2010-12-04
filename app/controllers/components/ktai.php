@@ -70,6 +70,8 @@ class KtaiComponent extends Object {
 		'output_convert_kana' => false, 
 		
 		'img_emoji_url' => "/img/emoticons/", 
+		
+		'use_xml' => false, 
 	);
 	
 	
