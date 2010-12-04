@@ -23,7 +23,7 @@
  * includes
  */
 if(!class_exists('lib3gk')){
-	require_once(VENDORS.'ecw'.DS.'lib3gk.php');
+	App::import('Vendor', 'ecw'.DS.'Lib3gk');
 }
 
 /**

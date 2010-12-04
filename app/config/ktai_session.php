@@ -39,7 +39,7 @@ if(!defined('__KTAI_SESSION__')){
 //Get Lib3gk instance.
 //
 if(!class_exists('lib3gk')){
-	require_once(VENDORS.'ecw'.DS.'lib3gk.php');
+	App::import('Vendor', 'ecw'.DS.'Lib3gk');
 }
 $ktai = Lib3gk::get_instance();
 
@@ -57,10 +57,17 @@ if($ktai->is_imode()){
 
 //Session settings.
 //
+$filepath = 'ecw'.DS.'session'.DS;
 if(version_compare(Configure::version(), '1.3') < 0){
-	include(VENDORS.'ecw'.DS.'session'.DS.'ktai_session_12.php');
+	$filepath .= 'ktai_session_12.php';
 }else{
-	include(VENDORS.'ecw'.DS.'session'.DS.'ktai_session_13.php');
+	$filepath .= 'ktai_session_13.php';
+}
+if(file_exists(APP.'vendors'.DS.$filepath)){
+	include(APP.'vendors'.DS.$filepath);
+}else
+if(file_exists(VENDORS.$filepath)){
+	include(VENDORS.$filepath);
 }
 
 //iMODE session settings.
