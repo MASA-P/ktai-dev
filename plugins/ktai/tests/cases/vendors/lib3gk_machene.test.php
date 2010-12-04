@@ -19,7 +19,7 @@
  * @license			http://www.gnu.org/licenses/gpl.html The GNU General Public Licence
  */
 
-App::import('Vendor', 'Lib3gkMachine');
+App::import('Vendor', 'Ktai.Lib3gkMachine');
 
 class TestLib3gkMachine extends CakeTestCase {
 

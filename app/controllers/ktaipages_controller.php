@@ -19,13 +19,13 @@
  * @license			http://www.gnu.org/licenses/gpl.html The GNU General Public Licence
  */
 
-App::import('Controller', 'KtaiApp');
+App::import('Controller', 'Ktai.KtaiApp');
 class KtaipagesController extends KtaiAppController {
 
 	var $name = 'Ktaipages';
 	var $uses = array();
-	var $components = array('Ktai');
-	var $helpers = array('Ktai');
+	var $components = array('Ktai.Ktai');
+	var $helpers = array('Ktai.Ktai');
 	var $layout = 'ktai_default';
 	
 	//Sample ktai params

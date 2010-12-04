@@ -19,8 +19,8 @@
  * @license			http://www.gnu.org/licenses/gpl.html The GNU General Public Licence
  */
 
-App::import('Vendor', 'ecw/Lib3gkCarrier');
-App::import('Controller', 'KtaiTests');
+App::import('Vendor', 'Ktai.ecw/Lib3gkCarrier');
+App::import('Controller', 'Ktai.KtaiTests');
 
 class TestKtaiTestsController extends CakeTestCase {
 	

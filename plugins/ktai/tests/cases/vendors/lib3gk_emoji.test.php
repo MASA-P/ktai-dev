@@ -19,10 +19,10 @@
  * @license			http://www.gnu.org/licenses/gpl.html The GNU General Public Licence
  */
 
-App::import('Vendor', 'Lib3gkEmoji');
+App::import('Vendor', 'Ktai.Lib3gkEmoji');
 
-App::import('Vendor', 'Lib3gkCarrier');
-App::import('Vendor', 'Lib3gkTools');
+App::import('Vendor', 'Ktai.Lib3gkCarrier');
+App::import('Vendor', 'Ktai.Lib3gkTools');
 
 class TestLib3gkEmoji extends CakeTestCase {
 

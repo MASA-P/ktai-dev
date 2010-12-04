@@ -64,7 +64,7 @@
  */
 class KtaiAppController extends AppController {
 	
-	var $components = array('Ktai');
+	var $components = array('Ktai.Ktai');
 	
 	//----------------------------------------------------------
 	//Redirect override.

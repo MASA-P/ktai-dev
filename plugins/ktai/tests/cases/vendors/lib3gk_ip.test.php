@@ -19,7 +19,7 @@
  * @license			http://www.gnu.org/licenses/gpl.html The GNU General Public Licence
  */
 
-App::import('Vendor', 'Lib3gkIp');
+App::import('Vendor', 'Ktai.Lib3gkIp');
 
 class TestLib3gkIp extends CakeTestCase {
 

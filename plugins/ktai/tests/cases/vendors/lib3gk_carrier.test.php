@@ -19,7 +19,7 @@
  * @license			http://www.gnu.org/licenses/gpl.html The GNU General Public Licence
  */
 
-App::import('Vendor', 'Lib3gkCarrier');
+App::import('Vendor', 'Ktai.Lib3gkCarrier');
 
 class TestLib3gkCarrier extends CakeTestCase {
 

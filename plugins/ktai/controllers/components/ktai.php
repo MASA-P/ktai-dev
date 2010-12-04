@@ -23,7 +23,7 @@
  * includes
  */
 if(!class_exists('lib3gk')){
-	App::import('Vendor', 'ecw'.DS.'Lib3gk');
+	App::import('Vendor', 'Ktai.ecw'.DS.'Lib3gk');
 }
 
 /**

@@ -19,33 +19,29 @@
  * @license			http://www.gnu.org/licenses/gpl.html The GNU General Public Licence
  */
 
-App::import('Controller', 'KtaiApp');
-class KtaiTestsController extends KtaiAppController {
+App::import('Vendor', 'Ktai.Lib3gk');
 
-	var $name = 'KtaiTests';
-	var $uses = array();
-	var $components = array('Ktai');
-	var $helpers = array('Ktai');
-	var $layout = 'ktai_test';
+class TestLib3gk extends CakeTestCase {
+
+	var $Lib3gk = null;
 	
-	//Sample ktai params
-	//
-	var $ktai = array(
-		'use_img_emoji' => true, 
-		'input_encoding' => 'UTF8', 
-		'output_encoding' => 'UTF8', 
-	);
-	
-	//Redirect test
-	//
-	function index(){
+	function start(){
+		$this->Lib3gk = new Lib3gk();
+		$this->Lib3gk->initialize();
 	}
 	
-	//AutoConvert test
-	//
-	function autoconv(){
-		$this->ktai = array_merge($this->ktai, array(
-			'output_encoding' => KTAI_ENCODING_SJISWIN, 
-		));
+	function stop(){
+		$this->Lib3gk->shutdown();
 	}
+	
+	function testGetVersion(){
+		$str = $this->Lib3gk->get_version();
+		$this->assertEqual($str, '0.4.0');
+	}
+	
+	function testGetIpCarrier(){
+		$result = $this->Lib3gk->get_ip_carrier();
+		$this->assertTrue(is_integer($result));
+	}
+	
 }
