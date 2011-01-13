@@ -187,37 +187,69 @@ class TestLib3gkEmoji extends CakeTestCase {
 		
 		$sjis = 0;			//UTF-8
 		$utf8 = 1;			//UTF-8
-		$car  = 1;			//docomo
+		$docomo  = 1;		//docomo
+		$kddi    = 2;		//KDDI
 		
-		//UTF-8
+		//docomo / UTF-8
 		//
 		$str  = "絵文字テスト。飲食店です";
 		$str .= $tools->int2utf8(0xe63e).$tools->int2utf8(0xe69c)."&#63647;aaa&#xe63e;bbb";
 		
 		$arr = $this->Lib3gkEmoji->__analyzeEmoji($str, array(
 			'input_carrier'   => KTAI_CARRIER_DOCOMO, 
-			'output_carrier'  => KTAI_CARRIER_DOCOMO, 
 			'input_encoding'  => KTAI_ENCODING_UTF8, 
 		));
 		$this->assertEqual($arr[0][0], '絵文字テスト。飲食店です');
 		$this->assertEqual($arr[0][1], 0xe63e);
 		$this->assertEqual($arr[0][2], $utf8);
-		$this->assertEqual($arr[0][3], $car);
+		$this->assertEqual($arr[0][3], $docomo);
 		
 		$this->assertEqual($arr[1][0], '');
 		$this->assertEqual($arr[1][1], 0xe69c);
 		$this->assertEqual($arr[1][2], $utf8);
-		$this->assertEqual($arr[1][3], $car);
+		$this->assertEqual($arr[1][3], $docomo);
 		
 		$this->assertEqual($arr[2][0], '');
 		$this->assertEqual($arr[2][1], 63647);
 		$this->assertEqual($arr[2][2], $sjis);
-		$this->assertEqual($arr[2][3], $car);
+		$this->assertEqual($arr[2][3], $docomo);
 		
 		$this->assertEqual($arr[3][0], 'aaa');
 		$this->assertEqual($arr[3][1], 0xe63e);
 		$this->assertEqual($arr[3][2], $utf8);
-		$this->assertEqual($arr[3][3], $car);
+		$this->assertEqual($arr[3][3], $docomo);
+		
+		$this->assertEqual($arr[4][0], 'bbb');
+		$this->assertEqual($arr[4][1], null);
+		
+		//AU / UTF-8
+		//
+		$str  = "絵文字テスト。飲食店です";
+		$str .= $tools->int2utf8(0xe488).$tools->int2utf8(0xe5a8)."&#63072;aaa&#xef60;bbb";
+		
+		$arr = $this->Lib3gkEmoji->__analyzeEmoji($str, array(
+			'input_carrier'   => KTAI_CARRIER_KDDI, 
+			'input_encoding'  => KTAI_ENCODING_UTF8, 
+		));
+		$this->assertEqual($arr[0][0], '絵文字テスト。飲食店です');
+		$this->assertEqual($arr[0][1], 0xe488);
+		$this->assertEqual($arr[0][2], $utf8);
+		$this->assertEqual($arr[0][3], $kddi);
+		
+		$this->assertEqual($arr[1][0], '');
+		$this->assertEqual($arr[1][1], 0xe5a8);
+		$this->assertEqual($arr[1][2], $utf8);
+		$this->assertEqual($arr[1][3], $kddi);
+		
+		$this->assertEqual($arr[2][0], '');
+		$this->assertEqual($arr[2][1], 0xf660);
+		$this->assertEqual($arr[2][2], $sjis);
+		$this->assertEqual($arr[2][3], $kddi);
+		
+		$this->assertEqual($arr[3][0], 'aaa');
+		$this->assertEqual($arr[3][1], 0xef60);
+		$this->assertEqual($arr[3][2], $utf8);
+		$this->assertEqual($arr[3][3], $kddi);
 		
 		$this->assertEqual($arr[4][0], 'bbb');
 		$this->assertEqual($arr[4][1], null);
@@ -229,29 +261,28 @@ class TestLib3gkEmoji extends CakeTestCase {
 		
 		$arr = $this->Lib3gkEmoji->__analyzeEmoji($str, array(
 			'input_carrier'   => KTAI_CARRIER_DOCOMO, 
-			'output_carrier'  => KTAI_CARRIER_DOCOMO, 
 			'input_encoding'  => KTAI_ENCODING_SJISWIN, 
 		));
 		
 		$this->assertEqual($arr[0][0], mb_convert_encoding('絵文字テスト。飲食店です', KTAI_ENCODING_SJISWIN, KTAI_ENCODING_UTF8));
 		$this->assertEqual($arr[0][1], 0xf89f);
 		$this->assertEqual($arr[0][2], $sjis);
-		$this->assertEqual($arr[0][3], $car);
+		$this->assertEqual($arr[0][3], $docomo);
 		
 		$this->assertEqual($arr[1][0], '');
 		$this->assertEqual($arr[1][1], 0xf940);
 		$this->assertEqual($arr[1][2], $sjis);
-		$this->assertEqual($arr[1][3], $car);
+		$this->assertEqual($arr[1][3], $docomo);
 		
 		$this->assertEqual($arr[2][0], '');
 		$this->assertEqual($arr[2][1], 63647);
 		$this->assertEqual($arr[2][2], $sjis);
-		$this->assertEqual($arr[2][3], $car);
+		$this->assertEqual($arr[2][3], $docomo);
 		
 		$this->assertEqual($arr[3][0], 'aaa');
 		$this->assertEqual($arr[3][1], 0xe63e);
 		$this->assertEqual($arr[3][2], $utf8);
-		$this->assertEqual($arr[3][3], $car);
+		$this->assertEqual($arr[3][3], $docomo);
 		
 		$this->assertEqual($arr[4][0], 'bbb');
 		$this->assertEqual($arr[4][1], null);

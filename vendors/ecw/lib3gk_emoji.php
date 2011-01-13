@@ -2306,7 +2306,6 @@ class Lib3gkEmoji {
 	 *
 	 * $optionのとるキーと値(省略可)
 	 *   'input_carrier'  入力データのキャリア
-	 *   'output_carrier' 変換するキャリア
 	 *   'input_encoding' 入力データのエンコーディング
 	 */
 	function &__analyzeEmoji($str, $options = array()){
@@ -2316,7 +2315,6 @@ class Lib3gkEmoji {
 		
 		$defalt_options = array(
 			'input_carrier'   => $this->__carrier->_carrier, 
-			'output_carrier'  => $this->__carrier->_carrier, 
 			'input_encoding'  => $this->_params['input_encoding'], 
 		);
 		$options = array_merge($defalt_options, $options);
