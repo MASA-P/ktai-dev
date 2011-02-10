@@ -77,6 +77,12 @@ class TestLib3gkCarrier extends CakeTestCase {
 		$user_agent = 'Mozilla/5.0 (Linux; U; Android 1.6; ja-jp; SonyEricssonSO-01B Build/R1EA018) AppleWebKit/528.5+ (KHTML, like Gecko) Version/3.1.2 Mobile Safari/525.20.1';
 		$arr = $this->Lib3gkCarrier->analyze_user_agent($user_agent);
 		$this->assertEqual($arr['carrier'], KTAI_CARRIER_ANDROID);
+		
+		$user_agent = 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; KDDI-TS01; Windows Phone 6.5.3.5)';
+		$arr = $this->Lib3gkCarrier->analyze_user_agent($user_agent);
+		$this->assertEqual($arr['carrier'], KTAI_CARRIER_KDDI);
+		$this->assertEqual($arr['machine_name'], 'default');
+		
 	}
 	
 	function testGetCarrier(){
@@ -118,6 +124,10 @@ class TestLib3gkCarrier extends CakeTestCase {
 		$user_agent = 'Mozilla/5.0 (Linux; U; Android 1.6; ja-jp; SonyEricssonSO-01B Build/R1EA018) AppleWebKit/528.5+ (KHTML, like Gecko) Version/3.1.2 Mobile Safari/525.20.1';
 		$test_value = $this->Lib3gkCarrier->get_carrier($user_agent);
 		$this->assertEqual($test_value, KTAI_CARRIER_ANDROID);
+		
+		$user_agent = 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; KDDI-TS01; Windows Phone 6.5.3.5)';
+		$test_value = $this->Lib3gkCarrier->get_carrier($user_agent);
+		$this->assertEqual($test_value, KTAI_CARRIER_KDDI);
 		
 	}
 	

@@ -202,8 +202,9 @@ class Lib3gkCarrier {
 		if(strpos($user_agent, 'KDDI-') !== false){
 			$arr['carrier'] = KTAI_CARRIER_KDDI;
 			$arr['carrier_name'] = 'KDDI';
-			preg_match('/KDDI\-([\w]+)\s/', $user_agent, $m);
-			$arr['machine_name'] = $m[1];
+			if(preg_match('/KDDI\-([\w]+)\s/', $user_agent, $m)){
+				$arr['machine_name'] = $m[1];
+			}
 		
 		//EMOBILE
 		//
@@ -211,8 +212,9 @@ class Lib3gkCarrier {
 		if(strpos($user_agent, 'emobile') !== false){
 			$arr['carrier'] = KTAI_CARRIER_EMOBILE;
 			$arr['carrier_name'] = 'emobile';
-			preg_match('/\(([\w]+);/', $user_agent, $m);
-			$arr['machine_name'] = $m[1];
+			if(preg_match('/\(([\w]+);/', $user_agent, $m)){
+				$arr['machine_name'] = $m[1];
+			}
 		
 		//iPhone
 		//
@@ -236,15 +238,17 @@ class Lib3gkCarrier {
 		if(strpos($user_agent, 'WILLCOM') !== false){
 			$arr['carrier'] = KTAI_CARRIER_PHS;
 			$arr['carrier_name'] = 'WILLCOM';
-			preg_match('_WILLCOM;[\w]+/([A-Za-z0-9\-]+)/_', $user_agent, $m);
-			$arr['machine_name'] = $m[1];
+			if(preg_match('_WILLCOM;[\w]+/([A-Za-z0-9\-]+)/_', $user_agent, $m)){
+				$arr['machine_name'] = $m[1];
+			}
 		}else
 		if(strpos($user_agent, 'DDIPOCKET') !== false){
 			$arr['carrier'] = KTAI_CARRIER_PHS;
 			$arr['carrier_name'] = 'DDIPOCKET';
 			$arr['machine_name'] = 'default';
-			preg_match('_DDIPOCKET;[\w]+/([A-Za-z0-9\-]+)/_', $user_agent, $m);
-			$arr['machine_name'] = $m[1];
+			if(preg_match('_DDIPOCKET;[\w]+/([A-Za-z0-9\-]+)/_', $user_agent, $m)){
+				$arr['machine_name'] = $m[1];
+			}
 		}
 		
 		return $arr;
