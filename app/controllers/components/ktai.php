@@ -23,7 +23,7 @@
  * includes
  */
 if(!class_exists('lib3gk')){
-	require_once(VENDORS.'ecw'.DS.'lib3gk.php');
+	App::import('Vendor', 'ecw'.DS.'Lib3gk');
 }
 
 /**
@@ -70,6 +70,8 @@ class KtaiComponent extends Object {
 		'output_convert_kana' => false, 
 		
 		'img_emoji_url' => "/img/emoticons/", 
+		
+		'use_xml' => false, 
 	);
 	
 	
