@@ -442,6 +442,19 @@ class Lib3gk {
 	
 	
 	/**
+	 * Android端末かのチェック
+	 * 詳しくはLib3gkCarrier::is_android()を参照
+	 *
+	 * @return boolean trueの場合はAndroid端末
+	 * @access public
+	 */
+	function is_android(){
+		$this->__load_carrier();
+		return $this->__carrier->is_android();
+	}
+	
+	
+	/**
 	 * 携帯かチェック
 	 * 詳しくはLib3gkCarrier::is_ktai()を参照
 	 *

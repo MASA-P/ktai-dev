@@ -308,6 +308,18 @@ class KtaiComponent extends Object {
 	
 	
 	/**
+	 * Android端末かのチェック
+	 * 詳しくはLib3gkCarrier::is_android()を参照
+	 *
+	 * @return boolean trueの場合はAndroid端末
+	 * @access public
+	 */
+	function is_iphone(){
+		return $this->_lib3gk->is_android();
+	}
+	
+	
+	/**
 	 * 携帯かチェック
 	 * 詳しくはLib3gkCarrier::is_ktai()を参照
 	 *
