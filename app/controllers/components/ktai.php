@@ -314,7 +314,7 @@ class KtaiComponent extends Object {
 	 * @return boolean trueの場合はAndroid端末
 	 * @access public
 	 */
-	function is_iphone(){
+	function is_android(){
 		return $this->_lib3gk->is_android();
 	}
 	
