@@ -90,6 +90,11 @@ class Lib3gkEmoji {
 		//Emoji caching params
 		//
 		'use_emoji_cache' => true,
+		
+		//for CakePHP
+		//
+		'output_auto_convert_emoji' => false, 
+		
 	);
 	
 	/**
@@ -2144,14 +2149,20 @@ class Lib3gkEmoji {
 			$carrier = $this->__carrier->get_carrier();
 		}
 		
-		if($binary === null){
-			$binary = $this->_params['use_binary_emoji'];
-		}
-		
 		if($output_encoding === null){
 			$output_encoding = $this->_params['output_encoding'];
 		}
 		$output_encoding = $this->__tools->normal_encoding_str($output_encoding);
+		
+		if($binary === null){
+			$binary = $this->_params['use_binary_emoji'];
+		}
+		if($this->_params['output_auto_convert_emoji'] === true){
+			$carrier = KTAI_CARRIER_DOCOMO;
+			$output_encoding = $this->_params['input_encoding'];
+			$binary = false;
+		}
+		
 		if($output_encoding == KTAI_ENCODING_UTF8){
 			if($carrier == KTAI_CARRIER_KDDI && $binary){
 				$oekey = 2;

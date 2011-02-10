@@ -89,7 +89,8 @@ class KtaiComponentTest extends CakeTestCase {
 		$str_title = mb_convert_kana($str_title, 'knrs', KTAI_ENCODING_SJISWIN);
 		$str_text = mb_convert_encoding($text, KTAI_ENCODING_SJISWIN, KTAI_ENCODING_UTF8);
 		$str_text = mb_convert_kana($str_text, 'knrs', KTAI_ENCODING_SJISWIN);
-		$emoji_text = $tools->int2str(0xf485);
+		$emoji_text1 = $tools->int2str(0xf485);
+		$emoji_text2 = $tools->int2str(0xf7e6);
 		
 		$this->controller->output = '';
 		$this->controller->render('autoconv');
@@ -98,7 +99,8 @@ class KtaiComponentTest extends CakeTestCase {
 		
 		$this->assertTrue(preg_match('/'.$str_title.'/', $html));
 		$this->assertTrue(preg_match('/'.$str_text.'/', $html));
-		$this->assertTrue(preg_match('/'.$emoji_text.'/', $html));
+		$this->assertTrue(preg_match('/'.$emoji_text1.'/', $html));
+		$this->assertTrue(preg_match('/'.$emoji_text2.'/', $html));
 		
 		//レイアウトの無い場合のレンダリング
 		//
@@ -108,7 +110,7 @@ class KtaiComponentTest extends CakeTestCase {
 		$html = $this->controller->output;
 		
 		$this->assertTrue(preg_match('/'.$str_text.'/', $html));
-		$this->assertTrue(preg_match('/'.$emoji_text.'/', $html));
+		$this->assertTrue(preg_match('/'.$emoji_text1.'/', $html));
 		
 		//数値文字参照を用いる場合
 		//
@@ -116,7 +118,8 @@ class KtaiComponentTest extends CakeTestCase {
 			'use_binary_emoji' => false, 
 		));
 		
-		$emoji_text = '&#62597;';
+		$emoji_text1 = '&#62597;';
+		$emoji_text2 = '&#63462;';
 		
 		$this->controller->output = '';
 		$this->controller->render('autoconv');
@@ -125,7 +128,8 @@ class KtaiComponentTest extends CakeTestCase {
 		
 		$this->assertTrue(preg_match('/'.$str_title.'/', $html));
 		$this->assertTrue(preg_match('/'.$str_text.'/', $html));
-		$this->assertTrue(preg_match('/'.$emoji_text.'/', $html));
+		$this->assertTrue(preg_match('/'.$emoji_text1.'/', $html));
+		$this->assertTrue(preg_match('/'.$emoji_text2.'/', $html));
 		
 		//かな変換をしない場合
 		//
@@ -143,7 +147,8 @@ class KtaiComponentTest extends CakeTestCase {
 		
 		$this->assertTrue(preg_match('/'.$str_title.'/', $html));
 		$this->assertTrue(preg_match('/'.$str_text.'/', $html));
-		$this->assertTrue(preg_match('/'.$emoji_text.'/', $html));
+		$this->assertTrue(preg_match('/'.$emoji_text1.'/', $html));
+		$this->assertTrue(preg_match('/'.$emoji_text2.'/', $html));
 		
 		//絵文字の自動変換はしないけどエンコード変換をする場合
 		//
@@ -162,7 +167,8 @@ class KtaiComponentTest extends CakeTestCase {
 		
 		$this->assertTrue(preg_match('/'.$str_title.'/', $html));
 		$this->assertTrue(preg_match('/'.$str_text.'/', $html));
-		$this->assertFalse(preg_match('/'.$emoji_text.'/', $html));
+		$this->assertFalse(preg_match('/'.$emoji_text1.'/', $html));	//埋め込み数値参照なのでNG
+		$this->assertTrue(preg_match('/'.$emoji_text2.'/', $html));		//emoji()で書いているのでOK
 		
 	}
 	
