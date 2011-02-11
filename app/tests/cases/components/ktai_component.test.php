@@ -170,6 +170,27 @@ class KtaiComponentTest extends CakeTestCase {
 		$this->assertFalse(preg_match('/'.$emoji_text1.'/', $html));	//埋め込み数値参照なのでNG
 		$this->assertTrue(preg_match('/'.$emoji_text2.'/', $html));		//emoji()で書いているのでOK
 		
+		//docomo→docomoでエンコーディングが発生する場合
+		//
+		$carrier->_carrier = KTAI_CARRIER_DOCOMO;
+		$emoji_text1 = $tools->int2str(0xf9f8);
+		$emoji_text2 = $tools->int2str(0xf8e9);
+		$this->ktai->_options = array_merge($this->ktai->_options, array(
+			'use_binary_emoji' => true, 
+			'output_auto_convert_emoji' => true, 
+			'output_auto_encoding' => true, 
+		));
+		
+		$this->controller->output = '';
+		$this->controller->render('autoconv');
+		$this->controller->Component->shutdown($this->controller);
+		$html = $this->controller->output;
+		
+		$this->assertTrue(preg_match('/'.$str_title.'/', $html));
+		$this->assertTrue(preg_match('/'.$str_text.'/', $html));
+		$this->assertTrue(preg_match('/'.$emoji_text1.'/', $html));
+		$this->assertTrue(preg_match('/'.$emoji_text2.'/', $html));
+		
 	}
 	
 }
