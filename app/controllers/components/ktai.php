@@ -137,6 +137,10 @@ class KtaiComponent extends Object {
 	 */
 	function shutdown(&$controller){
 		
+		if (!empty($controller->params['requested'])) {
+			return;
+		}
+		
 		$out = $controller->output;
 		
 		$input_encoding  = $this->_options['input_encoding'];
