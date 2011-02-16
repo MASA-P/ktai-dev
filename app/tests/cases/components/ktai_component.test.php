@@ -193,4 +193,31 @@ class KtaiComponentTest extends CakeTestCase {
 		
 	}
 	
+	function testShutdownt(){
+		
+		//通常のrender結果を入手
+		//
+		$this->controller->ktai = array_merge($this->controller->ktai, array(
+			'output_encoding' => KTAI_ENCODING_SJISWIN, 
+			'use_binary_emoji' => true, 
+			'output_auto_convert_emoji' => true, 
+			'output_auto_encoding' => true, 
+			'output_convert_kana' => 'knrs', 
+		));
+		$this->controller->output = null;
+		$this->controller->render('autoconv', false);
+		$this->controller->Component->shutdown($this->controller);
+		$check = $this->controller->output;
+		$this->controller->output = null;
+		
+		//requestAction()での結果入手
+		//
+		$result = $this->controller->requestAction('/ktai_tests/requested', array('return' => true));
+		
+		//2つの結果が異なっていればOK
+		//
+		$this->assertNotEqual($result, $check);
+		
+	}
+	
 }

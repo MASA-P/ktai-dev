@@ -137,37 +137,38 @@ class KtaiComponent extends Object {
 	 */
 	function shutdown(&$controller){
 		
-		if (!empty($controller->params['requested'])) {
-			return;
-		}
-		
-		$out = $controller->output;
-		
-		$input_encoding  = $this->_options['input_encoding'];
-		$output_encoding = $this->_options['output_encoding'];
-		
-		if($this->_options['output_convert_kana'] != false){
-			$out = mb_convert_kana(
-				$out, 
-				$this->_options['output_convert_kana'], 
-				$input_encoding
-			);
-		}
-		
-		if($this->_options['output_auto_convert_emoji']){
-			$this->convert_emoji($out);
-		}else{
-			if($this->_options['output_auto_encoding'] && 
-				($input_encoding != $output_encoding)){
-				$out = mb_convert_encoding(
+		//自動変換処理
+		//requestAction()からのコールの場合は以下処理をスキップする
+		//
+		if (!isset($controller->params['requested']) || $controller->params['requested'] !== 1) {
+			$out = $controller->output;
+			
+			$input_encoding  = $this->_options['input_encoding'];
+			$output_encoding = $this->_options['output_encoding'];
+			
+			if($this->_options['output_convert_kana'] != false){
+				$out = mb_convert_kana(
 					$out, 
-					$output_encoding, 
+					$this->_options['output_convert_kana'], 
 					$input_encoding
 				);
 			}
+			
+			if($this->_options['output_auto_convert_emoji']){
+				$this->convert_emoji($out);
+			}else{
+				if($this->_options['output_auto_encoding'] && 
+					($input_encoding != $output_encoding)){
+					$out = mb_convert_encoding(
+						$out, 
+						$output_encoding, 
+						$input_encoding
+					);
+				}
+			}
+			
+			$controller->output = $out;
 		}
-		
-		$controller->output = $out;
 	
 		$this->_lib3gk->shutdown();
 	}

@@ -48,4 +48,23 @@ class KtaiTestsController extends KtaiAppController {
 			'output_encoding' => KTAI_ENCODING_SJISWIN, 
 		));
 	}
+	
+	//requestActionテスト
+	//
+	function requested(){
+		
+		//自動コンバート設定(全部入り)
+		//
+		$this->ktai = array_merge($this->ktai, array(
+			'output_encoding' => KTAI_ENCODING_SJISWIN, 
+			'use_binary_emoji' => true, 
+			'output_auto_convert_emoji' => true, 
+			'output_auto_encoding' => true, 
+			'output_convert_kana' => 'knrs', 
+		));
+		
+		//autoconvをレンダリング(layoutなし)
+		//
+		$this->render('autoconv', false);
+	}
 }
