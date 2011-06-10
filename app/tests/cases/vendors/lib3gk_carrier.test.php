@@ -35,6 +35,9 @@ class TestLib3gkCarrier extends CakeTestCase {
 	}
 	
 	function testAnalyzeUserAgent(){
+		
+		$bak_user_agent = $_SERVER['HTTP_USER_AGENT'];
+		
 		$arr = $this->Lib3gkCarrier->analyze_user_agent();
 		$this->assertTrue(is_array($arr));
 		$this->assertEqual($arr['carrier'], KTAI_CARRIER_UNKNOWN);
@@ -83,6 +86,10 @@ class TestLib3gkCarrier extends CakeTestCase {
 		$this->assertEqual($arr['carrier'], KTAI_CARRIER_KDDI);
 		$this->assertEqual($arr['machine_name'], 'default');
 		
+		unset($_SERVER['HTTP_USER_AGENT']);
+		$arr = $this->Lib3gkCarrier->analyze_user_agent();
+		
+		$_SERVER['HTTP_USER_AGENT'] = $bak_user_agent;
 	}
 	
 	function testGetCarrier(){
