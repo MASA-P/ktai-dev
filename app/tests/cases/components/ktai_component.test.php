@@ -30,8 +30,6 @@ class KtaiComponentTest extends CakeTestCase {
 	var $view       = null;
 	var $ktai       = null;
 	
-	var $security_level = 'high';
-	
 	function start(){
 		
 		$carrier = Lib3gkCarrier::get_instance();
@@ -40,8 +38,6 @@ class KtaiComponentTest extends CakeTestCase {
 		Router::reload();
 		$this->controller = new KtaiTestsController();
 		$this->controller->constructClasses();
-		
-		Configure::write('Security.level', $this->security_level);
 		
 		$this->controller->Component->initialize($this->controller);
 		$this->controller->Component->startup($this->controller);
