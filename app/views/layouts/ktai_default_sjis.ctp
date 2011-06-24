@@ -1,13 +1,13 @@
 <?php
 	if(Configure::read('debug') == 0){
-		echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+		echo "<?xml version=\"1.0\" encoding=\"Shift_JIS\"?>\n";
 	}
 ?>
 <!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" 
 "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS" />
 <?php if($ktai->is_iphone()){ ?><meta name="viewport" content="width=260"><?php } ?>
 <title><?php echo $title_for_layout; ?></title>
 </head>

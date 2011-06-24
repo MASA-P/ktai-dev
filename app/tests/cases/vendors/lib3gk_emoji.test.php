@@ -110,21 +110,41 @@ class TestLib3gkEmoji extends CakeTestCase {
 		$str = $this->Lib3gkEmoji->emoji(0xe63e, false);
 		$this->assertEqual($str, $tools->int2utf8(0xef60));
 		
+		//SoftBank携帯はwebコードが使えなくなったため
+		//バイナリ＆数値文字参照に対応(ver0.4.2～)
+		//
 		$carrier->_carrier = KTAI_CARRIER_SOFTBANK;
 		$this->Lib3gkEmoji->_params['input_encoding']  = KTAI_ENCODING_SJISWIN;
 		$this->Lib3gkEmoji->_params['output_encoding'] = KTAI_ENCODING_SJISWIN;
 		$str = $this->Lib3gkEmoji->emoji(0xf89f, false);
-		$this->assertEqual($str, '$Gj');
+		$this->assertEqual($str, $tools->int2str(0xf98b));
 		$this->Lib3gkEmoji->_params['output_encoding'] = KTAI_ENCODING_UTF8;
 		$str = $this->Lib3gkEmoji->emoji(0xf89f, false);
-		$this->assertEqual($str, '$Gj');
+		$this->assertEqual($str, $tools->int2utf8(0xe04a));
 		$this->Lib3gkEmoji->_params['input_encoding']  = KTAI_ENCODING_UTF8;
 		$this->Lib3gkEmoji->_params['output_encoding'] = KTAI_ENCODING_SJISWIN;
 		$str = $this->Lib3gkEmoji->emoji(0xe63e, false);
-		$this->assertEqual($str, '$Gj');
+		$this->assertEqual($str, $tools->int2str(0xf98b));
 		$this->Lib3gkEmoji->_params['output_encoding'] = KTAI_ENCODING_UTF8;
 		$str = $this->Lib3gkEmoji->emoji(0xe63e, false);
-		$this->assertEqual($str, '$Gj');
+		$this->assertEqual($str, $tools->int2utf8(0xe04a));
+		
+		$this->Lib3gkEmoji->_params['use_binary_emoji']  = false;
+		$this->Lib3gkEmoji->_params['input_encoding']  = KTAI_ENCODING_SJISWIN;
+		$this->Lib3gkEmoji->_params['output_encoding'] = KTAI_ENCODING_SJISWIN;
+		$str = $this->Lib3gkEmoji->emoji(0xf89f, false);
+		$this->assertEqual($str, '&#57418;');
+		$this->Lib3gkEmoji->_params['output_encoding'] = KTAI_ENCODING_UTF8;
+		$str = $this->Lib3gkEmoji->emoji(0xf89f, false);
+		$this->assertEqual($str, '&#xe04a;');
+		$this->Lib3gkEmoji->_params['input_encoding']  = KTAI_ENCODING_UTF8;
+		$this->Lib3gkEmoji->_params['output_encoding'] = KTAI_ENCODING_SJISWIN;
+		$str = $this->Lib3gkEmoji->emoji(0xe63e, false);
+		$this->assertEqual($str, '&#57418;');
+		$this->Lib3gkEmoji->_params['output_encoding'] = KTAI_ENCODING_UTF8;
+		$str = $this->Lib3gkEmoji->emoji(0xe63e, false);
+		$this->assertEqual($str, '&#xe04a;');
+		$this->Lib3gkEmoji->_params['use_binary_emoji']  = true;
 		
 		$carrier->_carrier = KTAI_CARRIER_EMOBILE;
 		$this->Lib3gkEmoji->_params['input_encoding']  = KTAI_ENCODING_SJISWIN;
@@ -161,22 +181,28 @@ class TestLib3gkEmoji extends CakeTestCase {
 		
 		$code = 0xf89f;
 		$oekey = 0;
+		$useHex = false;
 		$binary = false;
-		$str = $this->Lib3gkEmoji->__convertEmojiChractor($code, $oekey, $binary);
+		$str = $this->Lib3gkEmoji->__convertEmojiChractor($code, $oekey, $useHex, $binary);
 		$this->assertEqual($str, '&#63647;');
 		
 		$binary = true;
-		$str = $this->Lib3gkEmoji->__convertEmojiChractor($code, $oekey, $binary);
+		$str = $this->Lib3gkEmoji->__convertEmojiChractor($code, $oekey, $useHex, $binary);
 		$this->assertEqual($str, $tools->int2str($code));
 		
 		$code = 0xe63e;
 		$oekey = 1;
+		$useHex = false;
 		$binary = false;
-		$str = $this->Lib3gkEmoji->__convertEmojiChractor($code, $oekey, $binary);
+		$str = $this->Lib3gkEmoji->__convertEmojiChractor($code, $oekey, $useHex, $binary);
+		$this->assertEqual($str, '&#58942;');
+		
+		$useHex = true;
+		$str = $this->Lib3gkEmoji->__convertEmojiChractor($code, $oekey, $useHex, $binary);
 		$this->assertEqual($str, '&#xe63e;');
 		
 		$binary = true;
-		$str = $this->Lib3gkEmoji->__convertEmojiChractor($code, $oekey, $binary);
+		$str = $this->Lib3gkEmoji->__convertEmojiChractor($code, $oekey, $useHex, $binary);
 		$this->assertEqual($str, $tools->int2utf8($code));
 		
 	}
@@ -399,12 +425,12 @@ class TestLib3gkEmoji extends CakeTestCase {
 				), 
 				KTAI_CARRIER_SOFTBANK => array(
 					array(
-						'$Gj', 
-						'$Gj', 
+						'&#xe04a;', 
+						'&#xe04a;', 
 					), 
 					array(
-						'$Gj', 
-						'$Gj', 
+						$lib3gkTools->int2utf8(0xe04a), 
+						$lib3gkTools->int2utf8(0xe04a), 
 					), 
 				), 
 			), 
@@ -441,12 +467,12 @@ class TestLib3gkEmoji extends CakeTestCase {
 				), 
 				KTAI_CARRIER_SOFTBANK => array(
 					array(
-						'$Gj', 
-						'$Gj', 
+						'&#57418;', 
+						'&#57418;', 
 					), 
 					array(
-						'$Gj', 
-						'$Gj', 
+						$lib3gkTools->int2str(0xf98b), 
+						$lib3gkTools->int2str(0xf98b), 
 					), 
 				), 
 			), 

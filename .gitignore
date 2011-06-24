@@ -1,2 +1,5 @@
 /app/config/database.php
 /app/tmp
+
+/app/webroot/img/emoticons/**
+!/app/webroot/img/emoticons/empty
