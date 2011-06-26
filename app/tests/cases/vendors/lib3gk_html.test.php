@@ -86,6 +86,9 @@ class TestLib3gkHtml extends CakeTestCase {
 		$str = 'Ktai Library';
 		$result = $this->Lib3gkHtml->get_qrcode($str);
 		$this->assertTrue(preg_match('/Ktai Library/', $result));
+		
+		$result = $this->Lib3gkHtml->get_qrcode($str, array('ec' => 'L', 'margin' => 4));
+		$this->assertTrue(preg_match('/&chld=-L|4/', $result));
 	}
 	
 	function testGetStaticMaps(){

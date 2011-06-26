@@ -388,7 +388,7 @@ class Lib3gkHtml {
 			unset($options['margin']);
 		}
 		if($ec != ''){
-			$url .= 'chld='.$ec;
+			$url .= '&chld='.$ec;
 		}
 		return $this->image($url, $options);
 	}
