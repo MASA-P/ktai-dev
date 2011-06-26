@@ -434,6 +434,7 @@ class Lib3gkCarrier {
 	 */
 	function is_softbank_email($email){
 		if(stripos($email, '@softbank.ne.jp') !== false) return true;
+		if(stripos($email, '@disney.ne.jp') !== false) return true;
 		if($this->_params['iphone_email_belongs_to_softbank_email'] && $this->is_iphone_email($email)) return true;
 		return $this->is_vodafone_email($email);
 	}
