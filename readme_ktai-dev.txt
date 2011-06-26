@@ -83,9 +83,14 @@
 |  +- controllers					[755] 
 |  |  +- components					[755] 
 |  |  |  +- ktai.php				[644] 携帯コンポーネント
+|  |  +- emoji_checks_controller.php	[644] 絵文字チェックコントローラ
 |  |  +- ktaipages_controller.php	[644] サンプルコントローラ
 |  |  +- ktai_tests_controller.php	[644] テスト用コントローラ
 |  +- views							[755] 
+|  |  +- emoji_checks				[755] 
+|  |  |  +- index.ctp				[644] 絵文字一覧(emoji()で生成)
+|  |  |  +- index_conv_bin.ctp		[644] 絵文字一覧(auto convする・バイナリ)
+|  |  |  +- index_conv_char.ctp		[644] 絵文字一覧(auto convする・数値参照)
 |  |  +- helpers					[755] 
 |  |  |  +- ktai.php				[644] 携帯ヘルパー
 |  |  +- ktaipages					[755] 
@@ -95,6 +100,8 @@
 |  |  |  +- autoconv.ctp			[644] テスト用ビュー(一括変換用)
 |  |  +- layouts					[755] 
 |  |     +- ktai_default.ctp		[644] サンプルレイアウト
+|  |     +- ktai_default_sjis.ctp	[644] サンプルレイアウト(SJIS用)
+|  |     +- ktai_test.ctp			[644] テスト用レイアウト
 |  +- webroot						[755] 
 |  |  +- img						[755] 
 |  |     +- emoticons				[755] 絵文字画像はここに設置します(後述)
